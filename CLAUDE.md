@@ -12,8 +12,8 @@ as the authoritative brand resource for both human and AI collaborators.
   text tokens, spacing, border-radius, shadows, z-index, transitions, container/grid variables.
   This file is the single source of truth for every brand value.
 - **`tokens/global.css`** — CSS reset, base element styles (body, headings), section theming
-  (`[data-section="always-dark"]`, `[data-section="invert"]`), container utilities, link
-  animation patterns, form base styles, prose/long-form content scope.
+  (`[data-section="always-dark"]`, `[data-section="always-light"]`, `[data-section="invert"]`),
+  container utilities, link animation patterns, form base styles, prose/long-form content scope.
 - **`tokens/typography.css`** — type scale utility classes, prose heading scale.
 - **`components/`** — all brand UI primitives (Button, Link, Tag, Card, form controls, toggles,
   Blockquote, CodeBlock). These are Astro components. Projects copy them locally.
@@ -44,7 +44,7 @@ openmined-brand-reference/
     Link.astro        ← link variants (inline, nav, absolute-cover, subtle)
     Tag.astro
     Card.astro
-    ThemeToggle.astro ← slider toggle (46×26px)
+    ThemeToggle.astro ← slider toggle (40×20px)
     MiniToggle.astro  ← small slider toggle (20×11px, header corner use)
     Input.astro
     Textarea.astro
@@ -59,6 +59,25 @@ openmined-brand-reference/
   brand-reference/    ← Astro project → GitHub Pages (brand.openmined.org)
   CLAUDE.md           ← this file
 ```
+
+## Color mode system
+
+All surface, foreground, and text tokens respond to the page theme via
+`[data-theme="dark"]` on `<html>`. Three `data-section` values override this
+at the element level — apply to any element, not just `<section>`:
+
+| Value | Effect | Use when |
+|---|---|---|
+| `always-dark` | Locks all `--surface-*` and `--text-*` tokens to their dark values, regardless of page theme. | An element must always appear on a dark surface (e.g. footer, hero with dark bg). |
+| `always-light` | Locks all `--surface-*` and `--text-*` tokens to their light values, regardless of page theme. | An element must always appear on a light surface — ensures dark text on light bg even in dark mode (e.g. logo cards with white bg, light-bg panels). |
+| `invert` | Remaps `--surface-*` to the `--dark-surface-*` parallel set, which flips with the page theme. In light mode → dark surface; in dark mode → light surface. | Sections that should always contrast with the surrounding page (promotional panels, callout rows). |
+
+**Rules:**
+- Inside any of these contexts, use `var(--surface-background-default)` for backgrounds and `var(--text-headline)` / `var(--text-body)` for text — they resolve to the correct locked or flipped values automatically.
+- Do NOT use hardcoded palette values (e.g. `--color-grayscale-850`) for text or backgrounds inside these contexts — the whole point is that semantic tokens adapt for you.
+- `always-dark` and `always-light` use fixed palette references — they never change regardless of page theme.
+- `invert` uses the `--dark-surface-*` parallel token set — it *does* respond to the page theme (dark surface in light mode, light surface in dark mode).
+- `color-scheme: dark/light` is set on `always-dark` and `always-light` so browser-native elements (scrollbars, form controls) also adapt.
 
 ## Icon system
 
@@ -140,13 +159,33 @@ Replace with self-hosted files before production.
 
 ## Approved logo files
 
-| File | Use |
-|---|---|
-| `OpenMined-Logo.svg` | Color, primary (light mode) |
-| `OpenMined-Logo-Dark.svg` | Reversed for dark mode |
-| `OpenMined-Logo-Footer.svg` | Small icon-only (footer bar, favicon-scale) |
-| `OpenMined-Logo-Mono-Black.svg` | Black monochrome |
-| `OpenMined-Logo-Mono-White.svg` | White monochrome |
+All variants sourced from brand.openmined.org. SVGs live in `assets/logos/`.
 
-**Logo audit note:** Cross-check against brand.openmined.org downloads before the brand
-reference site goes live — additional variants may exist that need to be added here.
+**Horizontal lockup**
+
+| File | Background | Notes |
+|---|---|---|
+| `OpenMined-Logo.svg` | Light | Full color, primary |
+| `OpenMined-Logo-Dark.svg` | Dark | Reversed / white |
+| `OpenMined-Logo-Ghost.svg` | Dark | Ghost / transparent treatment |
+| `OpenMined-Logo-Mono-White.svg` | Dark | White monochrome |
+| `OpenMined-Logo-Mono-Black.svg` | Light | Black monochrome |
+
+**Stacked lockup**
+
+| File | Background | Notes |
+|---|---|---|
+| `OpenMined-Logo-Stacked.svg` | Light | Full color |
+| `OpenMined-Logo-Stacked-Dark.svg` | Dark | Reversed / white |
+| `OpenMined-Logo-Stacked-Ghost.svg` | Dark | Ghost / transparent treatment |
+| `OpenMined-Logo-Stacked-Mono-White.svg` | Dark | White monochrome |
+| `OpenMined-Logo-Stacked-Mono-Black.svg` | Light | Black monochrome (derived from Mono-White) |
+
+**Icon mark**
+
+| File | Background | Notes |
+|---|---|---|
+| `OpenMined-Icon.svg` | Dark | Standalone diamond mark |
+
+When logos change: update `assets/logos/` in this repo, copy to `brand-reference/public/logos/`
+(Vite does not follow symlinks), and sync to consuming projects' `public/logos/`.

@@ -108,6 +108,27 @@ nav {
   color-scheme: dark;
 }
 
+/* always-light: locked light surface regardless of page theme.
+   Mirrors always-dark. Use on cards, panels, or any element that must
+   always display on a light surface — ensures dark text on light bg in both modes. */
+[data-section="always-light"] {
+  --surface-background-default:  var(--color-grayscale-50);
+  --surface-background-bright:   var(--color-grayscale-00);
+  --surface-background-dim:      var(--color-grayscale-150);
+  --surface-foreground-lowest:   var(--color-grayscale-100);
+  --surface-foreground-low:      var(--color-grayscale-200);
+  --surface-foreground-default:  var(--color-grayscale-300);
+  --surface-foreground-high:     var(--color-grayscale-400);
+  --surface-foreground-highest:  var(--color-grayscale-500);
+  --text-headline:               var(--color-grayscale-850);
+  --text-body:                   var(--color-grayscale-750);
+  --text-headline-light:         var(--color-grayscale-50);
+  --text-body-light:             var(--color-grayscale-400);
+  --button-dark-color:           var(--color-grayscale-850);
+  --button-light-color:          var(--color-grayscale-50);
+  color-scheme: light;
+}
+
 /* invert: remaps --surface-* to --dark-surface-* which flip with the page theme */
 [data-section="invert"] {
   --surface-background-default:  var(--dark-surface-background-default);

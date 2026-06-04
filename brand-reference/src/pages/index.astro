@@ -141,12 +141,33 @@ const selectOptions = [
   { value: 'opt3', label: 'Option 3' },
 ];
 
-const logos = [
-  { file: 'OpenMined-Logo.svg',            label: 'Full color · light bg',      dark: false },
-  { file: 'OpenMined-Logo-Dark.svg',       label: 'White · dark bg',            dark: true  },
-  { file: 'OpenMined-Logo-Mono-White.svg', label: 'Mono white · dark bg',       dark: true  },
-  { file: 'OpenMined-Logo-Mono-Black.svg', label: 'Mono black · light bg',      dark: false },
-  { file: 'OpenMined-Logo-Footer.svg',     label: 'Diamond mark · footer / favicon', dark: true  },
+const logoGroups = [
+  {
+    group: 'Horizontal',
+    logos: [
+      { file: 'OpenMined-Logo.svg',            label: 'Full color',    dark: false },
+      { file: 'OpenMined-Logo-Dark.svg',        label: 'Reversed',      dark: true  },
+      { file: 'OpenMined-Logo-Ghost.svg',       label: 'Ghost',         dark: true  },
+      { file: 'OpenMined-Logo-Mono-White.svg',  label: 'Mono white',    dark: true  },
+      { file: 'OpenMined-Logo-Mono-Black.svg',  label: 'Mono black',    dark: false },
+    ],
+  },
+  {
+    group: 'Stacked',
+    logos: [
+      { file: 'OpenMined-Logo-Stacked.svg',           label: 'Full color', dark: false },
+      { file: 'OpenMined-Logo-Stacked-Dark.svg',       label: 'Reversed',   dark: true  },
+      { file: 'OpenMined-Logo-Stacked-Ghost.svg',      label: 'Ghost',      dark: true  },
+      { file: 'OpenMined-Logo-Stacked-Mono-White.svg', label: 'Mono white', dark: true  },
+      { file: 'OpenMined-Logo-Stacked-Mono-Black.svg', label: 'Mono black', dark: false },
+    ],
+  },
+  {
+    group: 'Icon mark',
+    logos: [
+      { file: 'OpenMined-Icon.svg', label: 'Icon mark', dark: true },
+    ],
+  },
 ];
 
 const navLinks = [
@@ -602,23 +623,28 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
         <!-- LOGOS -->
         <section class="sg-section" id="logos">
           <h2 class="sg-section__title">Logos</h2>
-          <p class="sg-section__desc">All approved logo variants. SVG source files live in <code>assets/logos/</code> — download links below.</p>
-          <div class="sg-logo-grid">
-            {logos.map(({ file, label, dark }) => (
-              <div class:list={['sg-logo-cell', dark ? 'sg-logo-cell--dark' : 'sg-logo-cell--light']}>
-                <img src={`/logos/${file}`} alt={label} class="sg-logo-img" />
-                <span class="text-caption" style={dark ? 'color: var(--color-grayscale-300);' : ''}>{label}</span>
-                <a
-                  class="sg-logo-download"
-                  href={`/logos/${file}`}
-                  download={file}
-                  style={dark ? 'color: var(--color-grayscale-400);' : ''}
-                >
-                  <ion-icon name="download-outline"></ion-icon> {file}
-                </a>
+          <p class="sg-section__desc">All approved logo variants from brand.openmined.org. SVG source files in <code>assets/logos/</code>.</p>
+
+          {logoGroups.map(group => (
+            <div class="sg-logo-group">
+              <h3 class="sg-subsection-title">{group.group}</h3>
+              {group.note && <p class="sg-logo-group-note">{group.note}</p>}
+              <div class="sg-logo-grid">
+                {group.logos.map(({ file, label, dark }) => (
+                  <div
+                    class:list={['sg-logo-cell', dark ? 'sg-logo-cell--dark' : 'sg-logo-cell--light']}
+                    data-section={dark ? 'always-dark' : 'always-light'}
+                  >
+                    <img src={`/logos/${file}`} alt={label} class="sg-logo-img" />
+                    <span class="text-caption">{label}</span>
+                    <a class="sg-logo-download" href={`/logos/${file}`} download={file}>
+                      <ion-icon name="download-outline"></ion-icon> {file}
+                    </a>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </section>
 
       </div>
@@ -683,6 +709,11 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
   .br-nav__link:hover {
     background: var(--surface-foreground-low);
+    color: var(--text-headline);
+  }
+
+  .br-nav__link.is-active {
+    background: var(--surface-foreground-default);
     color: var(--text-headline);
   }
 
@@ -1051,6 +1082,10 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
 
   /* ── Logos ────────────────────────────────────────────────────────── */
+  .sg-logo-group {
+    margin-bottom: var(--spacing-4XL);
+  }
+
   .sg-logo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1069,11 +1104,12 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
 
   .sg-logo-cell--light {
-    background: var(--color-grayscale-50);
+    background: var(--surface-background-default);
     border: 1px solid var(--surface-foreground-default);
   }
 
-  .sg-logo-cell--dark { background: var(--color-grayscale-950); }
+  /* always-dark context provides the dark palette; no hardcoding needed */
+  .sg-logo-cell--dark { background: var(--surface-background-dim); }
 
   .sg-logo-img { max-width: 220px; max-height: 80px; object-fit: contain; }
 
@@ -1109,6 +1145,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
 </style>
 
 <script>
+  // Graphic copy buttons
   document.addEventListener('click', (e: MouseEvent) => {
     const btn = (e.target as HTMLElement).closest('.sg-graphic-copy') as HTMLElement | null;
     if (!btn) return;
@@ -1118,4 +1155,33 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
       setTimeout(() => btn.classList.remove('copied'), 2000);
     });
   });
+
+  // Scrollspy — highlight the active nav section
+  (() => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('section.sg-section[id]'));
+    const links    = document.querySelectorAll<HTMLAnchorElement>('.br-nav__link');
+    const visible  = new Set<string>();
+
+    const setActive = () => {
+      // First visible section in document order wins
+      const current = sections.find(s => visible.has(s.id))?.id ?? null;
+      links.forEach(link => {
+        link.classList.toggle('is-active', link.getAttribute('href') === `#${current}`);
+      });
+    };
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        entry.isIntersecting ? visible.add(entry.target.id) : visible.delete(entry.target.id);
+      });
+      setActive();
+    }, {
+      // Section must break past the sticky nav (≈56px) and
+      // be within the top 60% of the viewport to register
+      rootMargin: '-56px 0px -40% 0px',
+      threshold: 0,
+    });
+
+    sections.forEach(s => observer.observe(s));
+  })();
 </script>
