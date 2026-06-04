@@ -18,8 +18,8 @@ const { class: className } = Astro.props;
 
 <style>
   .theme-toggle {
-    --tt-w: 46px;
-    --tt-h: 26px;
+    --tt-w: 40px;
+    --tt-h: 20px;
     --tt-pad: 3px;
     --tt-knob: calc(var(--tt-h) - 2 * var(--tt-pad));
     display: inline-flex;
@@ -35,8 +35,9 @@ const { class: className } = Astro.props;
     width: var(--tt-w);
     height: var(--tt-h);
     border-radius: var(--border-radius-full);
-    background: var(--surface-foreground-highest);
-    transition: background-color var(--transition-base);
+    background: var(--surface-foreground-default);
+    box-shadow: 0 0 0 1px var(--text-body);
+    transition: background-color var(--transition-base), box-shadow var(--transition-base);
   }
 
   .theme-toggle__knob {
@@ -46,8 +47,7 @@ const { class: className } = Astro.props;
     width: var(--tt-knob);
     height: var(--tt-knob);
     border-radius: var(--border-radius-full);
-    background: var(--color-grayscale-00);
-    box-shadow: var(--shadow-sm);
+    background: var(--text-body);
     transition: transform var(--transition-base);
   }
 
