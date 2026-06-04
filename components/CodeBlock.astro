@@ -1,0 +1,42 @@
+---
+interface Props {
+  variant?: 'inline' | 'block';
+  lang?: string;
+  class?: string;
+}
+
+const {
+  variant = 'block',
+  lang,
+  class: className = '',
+} = Astro.props;
+---
+
+{variant === 'inline' ? (
+  <code class={className}><slot /></code>
+) : (
+  <pre class={['code-block', className].filter(Boolean).join(' ')}>
+    <code class={lang ? `language-${lang}` : undefined}><slot /></code>
+  </pre>
+)}
+
+<style>
+  /* Inline code inherits from global.css */
+
+  /* Block overrides */
+  .code-block {
+    background-color: var(--color-grayscale-950);
+    border-radius: var(--border-radius-S);
+    padding: 1em 1.25em;
+    overflow-x: auto;
+    margin-block: var(--spacing-L);
+  }
+
+  .code-block code {
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    color: var(--color-grayscale-50);
+    font-size: 14px;
+  }
+</style>
