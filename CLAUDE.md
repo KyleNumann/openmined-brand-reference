@@ -91,7 +91,9 @@ project/src/brand/
 brand-version.txt   ← record the brand repo commit SHA at sync time
 ```
 
-Logo SVGs copy to the project's `public/logos/` (served as static assets).
+Logo SVGs copy to the project's `public/logos/` (served as static assets). Within this repo,
+`brand-reference/public/logos/` is a committed copy of `assets/logos/` — Vite's build pipeline
+does not follow symlinks, so they must be kept in sync manually when logos change.
 
 Record the brand repo commit SHA in `src/brand/brand-version.txt` — this is the audit trail
 for which version of the brand assets the project is on.

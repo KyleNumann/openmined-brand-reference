@@ -1,0 +1,893 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '@brand/Button.astro';
+import Link from '@brand/Link.astro';
+import Tag from '@brand/Tag.astro';
+import Card from '@brand/Card.astro';
+import ThemeToggle from '@brand/ThemeToggle.astro';
+import MiniToggle from '@brand/MiniToggle.astro';
+import Input from '@brand/Input.astro';
+import Textarea from '@brand/Textarea.astro';
+import Select from '@brand/Select.astro';
+import Checkbox from '@brand/Checkbox.astro';
+import Radio from '@brand/Radio.astro';
+import Blockquote from '@brand/Blockquote.astro';
+import CodeBlock from '@brand/CodeBlock.astro';
+
+// ── Color palette ─────────────────────────────────────────────────────
+const palette = [
+  { name: 'Grayscale', family: 'grayscale', steps: [
+    { s: '00',   hex: '#ffffff' }, { s: '50',   hex: '#fcfcfd' },
+    { s: '100',  hex: '#f7f6f9' }, { s: '150',  hex: '#f4f3f6' },
+    { s: '200',  hex: '#f1f0f4' }, { s: '300',  hex: '#ecebef' },
+    { s: '400',  hex: '#cfcdd6' }, { s: '500',  hex: '#b4b0bf' },
+    { s: '550',  hex: '#868394' }, { s: '600',  hex: '#5e5a72' },
+    { s: '700',  hex: '#464257' }, { s: '750',  hex: '#353243' },
+    { s: '800',  hex: '#2e2b3b' }, { s: '850',  hex: '#272532' },
+    { s: '900',  hex: '#23202c' }, { s: '950',  hex: '#17161d' },
+    { s: '1000', hex: '#000000' },
+  ]},
+  { name: 'Gold', family: 'gold', steps: [
+    { s: '50', hex: '#fef9f0' }, { s: '100', hex: '#fef2e2' }, { s: '200', hex: '#fce5c5' },
+    { s: '300', hex: '#fbdaac' }, { s: '400', hex: '#f9cd8f' }, { s: '500', hex: '#f8c073' },
+    { s: '600', hex: '#f5a22e' }, { s: '700', hex: '#d17e0a' }, { s: '800', hex: '#885207' },
+    { s: '900', hex: '#442903' }, { s: '950', hex: '#221502' },
+  ]},
+  { name: 'Orange', family: 'orange', steps: [
+    { s: '50', hex: '#fef5f0' }, { s: '100', hex: '#feece2' }, { s: '200', hex: '#fcd5c0' },
+    { s: '300', hex: '#fac1a3' }, { s: '400', hex: '#f9ab81' }, { s: '500', hex: '#f79763' },
+    { s: '600', hex: '#f46a20' }, { s: '700', hex: '#c74c0a' }, { s: '800', hex: '#833207' },
+    { s: '900', hex: '#441a03' }, { s: '950', hex: '#220d02' },
+  ]},
+  { name: 'Red', family: 'red', steps: [
+    { s: '50', hex: '#faf0f2' }, { s: '100', hex: '#f5e0e5' }, { s: '200', hex: '#ebc2ca' },
+    { s: '300', hex: '#e0a3b0' }, { s: '400', hex: '#d68595' }, { s: '500', hex: '#cc677b' },
+    { s: '600', hex: '#b73d56' }, { s: '700', hex: '#8a2e40' }, { s: '800', hex: '#5c1f2b' },
+    { s: '900', hex: '#2e0f15' }, { s: '950', hex: '#17080b' },
+  ]},
+  { name: 'Violet', family: 'violet', steps: [
+    { s: '50', hex: '#f4f0f4' }, { s: '100', hex: '#e9e1ea' }, { s: '200', hex: '#d5c7d6' },
+    { s: '300', hex: '#bea9c1' }, { s: '400', hex: '#a88bac' }, { s: '500', hex: '#937098' },
+    { s: '600', hex: '#76587a' }, { s: '700', hex: '#59425c' }, { s: '800', hex: '#3c2d3e' },
+    { s: '900', hex: '#1d151e' }, { s: '950', hex: '#0e0b0f' },
+  ]},
+  { name: 'Blue', family: 'blue', steps: [
+    { s: '50', hex: '#eef0f6' }, { s: '100', hex: '#e1e4ef' }, { s: '200', hex: '#c3c8df' },
+    { s: '300', hex: '#a6adcf' }, { s: '400', hex: '#8892bf' }, { s: '500', hex: '#6976ae' },
+    { s: '600', hex: '#4f5b92' }, { s: '700', hex: '#3b446d' }, { s: '800', hex: '#272d49' },
+    { s: '900', hex: '#141724' }, { s: '950', hex: '#090a11' },
+  ]},
+  { name: 'Teal', family: 'teal', note: 'primary interactive family', steps: [
+    { s: '50', hex: '#ecf5f9' }, { s: '100', hex: '#ddeef3' }, { s: '200', hex: '#badde8' },
+    { s: '300', hex: '#98cbdc' }, { s: '400', hex: '#75bad1' }, { s: '500', hex: '#52a8c5' },
+    { s: '600', hex: '#388ca8' }, { s: '700', hex: '#2a697e' }, { s: '800', hex: '#1c4654' },
+    { s: '900', hex: '#0e232a' }, { s: '950', hex: '#061013' },
+  ]},
+  { name: 'Green', family: 'green', steps: [
+    { s: '50', hex: '#ecf8f6' }, { s: '100', hex: '#def2ee' }, { s: '200', hex: '#b9e4dc' },
+    { s: '300', hex: '#97d8cb' }, { s: '400', hex: '#76cbba' }, { s: '500', hex: '#53bea9' },
+    { s: '600', hex: '#3c9f8b' }, { s: '700', hex: '#2d7668' }, { s: '800', hex: '#1d4e44' },
+    { s: '900', hex: '#0f2924' }, { s: '950', hex: '#071310' },
+  ]},
+  { name: 'Lime', family: 'lime', steps: [
+    { s: '50', hex: '#f4faf4' }, { s: '100', hex: '#eaf6ea' }, { s: '200', hex: '#d5ecd4' },
+    { s: '300', hex: '#c0e3bf' }, { s: '400', hex: '#aadaaa' }, { s: '500', hex: '#96d195' },
+    { s: '600', hex: '#64bb62' }, { s: '700', hex: '#429541' }, { s: '800', hex: '#2c642b' },
+    { s: '900', hex: '#163216' }, { s: '950', hex: '#0b190b' },
+  ]},
+  { name: 'Yellow', family: 'yellow', steps: [
+    { s: '50', hex: '#fdfaf1' }, { s: '100', hex: '#fcf7e8' }, { s: '200', hex: '#faf0d1' },
+    { s: '300', hex: '#f7e8ba' }, { s: '400', hex: '#f5e0a3' }, { s: '500', hex: '#f2d98c' },
+    { s: '600', hex: '#eac248' }, { s: '700', hex: '#cea017' }, { s: '800', hex: '#896b10' },
+    { s: '900', hex: '#453508' }, { s: '950', hex: '#201904' },
+  ]},
+];
+
+const gradients = [
+  { name: 'Gold → Orange',  value: 'linear-gradient(67deg, #F8C073 0%, #F79763 99.29%)' },
+  { name: 'Orange → Red',   value: 'linear-gradient(67deg, #F79763 0%, #CC677B 99.29%)' },
+  { name: 'Red → Violet',   value: 'linear-gradient(67deg, #CC677B 0%, #6976AE 99.29%)' },
+  { name: 'Violet → Blue',  value: 'linear-gradient(67deg, #6976AE 0%, #52A8C5 99.29%)' },
+  { name: 'Teal → Green',   value: 'linear-gradient(67deg, #52A8C5 0%, #53BEA9 99.29%)' },
+  { name: 'Green → Lime',   value: 'linear-gradient(67deg, #53BEA9 0%, #96D195 99.29%)' },
+  { name: 'Lime → Yellow',  value: 'linear-gradient(67deg, #96D195 0%, #F2D98C 99.29%)' },
+];
+
+// ── Spacing scale ─────────────────────────────────────────────────────
+const spacingScale = [
+  { token: '--spacing-3XS', px: 2 },
+  { token: '--spacing-2XS', px: 4 },
+  { token: '--spacing-XS',  px: 6 },
+  { token: '--spacing-S',   px: 8 },
+  { token: '--spacing-M',   px: 12 },
+  { token: '--spacing-L',   px: 16 },
+  { token: '--spacing-XL',  px: 20 },
+  { token: '--spacing-2XL', px: 24 },
+  { token: '--spacing-3XL', px: 32 },
+  { token: '--spacing-4XL', px: 40 },
+  { token: '--spacing-5XL', px: 48 },
+  { token: '--spacing-full', px: 88 },
+];
+
+// ── Logos ─────────────────────────────────────────────────────────────
+const logos = [
+  { file: 'OpenMined-Logo.svg',           label: 'Color (light mode)',   dark: false },
+  { file: 'OpenMined-Logo-Dark.svg',      label: 'Reversed (dark mode)', dark: true  },
+  { file: 'OpenMined-Logo-Footer.svg',    label: 'Icon only',            dark: true  },
+  { file: 'OpenMined-Logo-Mono-Black.svg',label: 'Mono black',           dark: false },
+  { file: 'OpenMined-Logo-Mono-White.svg',label: 'Mono white',           dark: true  },
+];
+
+const navLinks = [
+  { label: 'Color',       href: '#color'      },
+  { label: 'Typography',  href: '#typography' },
+  { label: 'Spacing',     href: '#spacing'    },
+  { label: 'Logo',        href: '#logo'       },
+  { label: 'Components',  href: '#components' },
+];
+---
+
+<Base>
+
+  <!-- ── Top nav ────────────────────────────────────────────────────── -->
+  <header class="br-nav">
+    <div class="container br-nav__inner">
+      <a href="/" class="br-nav__logo" aria-label="OpenMined Brand Reference">
+        <img src="/logos/OpenMined-Logo.svg"      alt="OpenMined" class="logo-color" height="28" />
+        <img src="/logos/OpenMined-Logo-Dark.svg" alt="OpenMined" class="logo-white" height="28" />
+        <span class="br-nav__title">Brand Reference</span>
+      </a>
+      <nav class="br-nav__links" aria-label="Sections">
+        {navLinks.map(l => <a class="br-nav__link" href={l.href}>{l.label}</a>)}
+      </nav>
+      <ThemeToggle />
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── Overview ───────────────────────────────────────────────────── -->
+    <section class="br-section br-section--hero">
+      <div class="container">
+        <p class="br-eyebrow">OpenMined Design System</p>
+        <h1 class="br-hero-heading">Brand Reference</h1>
+        <p class="br-hero-body">
+          Canonical tokens, UI primitives, and logo assets for all OpenMined projects and sub-brands.
+          Tokens defined here are the single source of truth — all values flow from
+          <code>tokens/tokens.css</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Color ──────────────────────────────────────────────────────── -->
+    <section id="color" class="br-section">
+      <div class="container">
+        <h2 class="br-section-heading">Color</h2>
+
+        <h3 class="br-subsection-heading">Palette</h3>
+        <div class="br-palette">
+          {palette.map(family => (
+            <div class="br-palette-family">
+              <p class="br-palette-name">
+                {family.name}
+                {family.note && <span class="br-palette-note"> — {family.note}</span>}
+              </p>
+              <div class="br-swatches">
+                {family.steps.map(({ s, hex }) => (
+                  <div class="br-swatch">
+                    <div class="br-swatch-color" style={`background: ${hex}`}></div>
+                    <span class="br-swatch-step">{s}</span>
+                    <span class="br-swatch-hex">{hex}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h3 class="br-subsection-heading">Gradients</h3>
+        <div class="br-gradients">
+          {gradients.map(g => (
+            <div class="br-gradient">
+              <div class="br-gradient-bar" style={`background: ${g.value}`}></div>
+              <span class="br-gradient-name">{g.name}</span>
+            </div>
+          ))}
+        </div>
+
+        <h3 class="br-subsection-heading">Semantic tokens</h3>
+        <p class="br-note">Semantic tokens remap with <code>[data-theme="dark"]</code>. Toggle the theme switch to see both states.</p>
+        <div class="br-semantic-grid">
+
+          <div class="br-semantic-group">
+            <p class="br-semantic-group-label">Surface — background</p>
+            {['--surface-background-default','--surface-background-bright','--surface-background-dim'].map(t => (
+              <div class="br-semantic-row">
+                <div class="br-semantic-swatch" style={`background: var(${t}); border: 1px solid var(--border-color)`}></div>
+                <code class="br-semantic-token">{t}</code>
+              </div>
+            ))}
+          </div>
+
+          <div class="br-semantic-group">
+            <p class="br-semantic-group-label">Surface — foreground</p>
+            {['--surface-foreground-lowest','--surface-foreground-low','--surface-foreground-default','--surface-foreground-high','--surface-foreground-highest'].map(t => (
+              <div class="br-semantic-row">
+                <div class="br-semantic-swatch" style={`background: var(${t})`}></div>
+                <code class="br-semantic-token">{t}</code>
+              </div>
+            ))}
+          </div>
+
+          <div class="br-semantic-group">
+            <p class="br-semantic-group-label">Text</p>
+            {['--text-headline','--text-body','--text-subtle'].map(t => (
+              <div class="br-semantic-row">
+                <div class="br-semantic-swatch" style={`background: var(${t})`}></div>
+                <code class="br-semantic-token">{t}</code>
+              </div>
+            ))}
+          </div>
+
+          <div class="br-semantic-group">
+            <p class="br-semantic-group-label">Interactive states</p>
+            {['--color-interactive-default','--color-interactive-hover','--color-interactive-focus','--color-interactive-active','--color-interactive-disabled'].map(t => (
+              <div class="br-semantic-row">
+                <div class="br-semantic-swatch" style={`background: var(${t})`}></div>
+                <code class="br-semantic-token">{t}</code>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Typography ─────────────────────────────────────────────────── -->
+    <section id="typography" class="br-section">
+      <div class="container">
+        <h2 class="br-section-heading">Typography</h2>
+
+        <h3 class="br-subsection-heading">Heading scale — Rubik 400</h3>
+        <div class="br-type-scale">
+          <div class="br-type-row"><span class="br-type-label">h1 · 61px / 1.2</span><h1>The Missing Layer</h1></div>
+          <div class="br-type-row"><span class="br-type-label">h2 · 47px / 1.2</span><h2>Collective Intelligence</h2></div>
+          <div class="br-type-row"><span class="br-type-label">h3 · 36px / 1.2</span><h3>Federated AI Network</h3></div>
+          <div class="br-type-row"><span class="br-type-label">h4 · 27px / 1.2</span><h4>Supported Subnets</h4></div>
+        </div>
+
+        <h3 class="br-subsection-heading">Body — Inter 400 / 16px / 1.5</h3>
+        <p>
+          We're OpenMined, a non-profit community building technology that enables
+          secure computation across siloed data — unlocking collective intelligence
+          while preserving attribution-based control. No vendor lock-in, no black boxes.
+        </p>
+
+        <h3 class="br-subsection-heading">Heading scale — Inter 400</h3>
+        <div class="br-type-scale">
+          <div class="br-type-row"><span class="br-type-label">h5 · 21px / 1.4</span><h5>How We Help</h5></div>
+          <div class="br-type-row"><span class="br-type-label">h6 · 20px / 1.5</span><h6>Open Public Infrastructure</h6></div>
+        </div>
+
+        <h3 class="br-subsection-heading">Type utilities</h3>
+        <div class="br-type-utilities">
+          <div class="br-type-util-row">
+            <code class="br-util-label">.text-subtitle</code>
+            <p class="text-subtitle">21px / Inter 400 / text-subtle color</p>
+          </div>
+          <div class="br-type-util-row">
+            <code class="br-util-label">.text-eyebrow</code>
+            <p class="text-eyebrow">Semantic hook — inherits body defaults</p>
+          </div>
+          <div class="br-type-util-row">
+            <code class="br-util-label">.text-caption</code>
+            <p class="text-caption">11px / Inter 500 / text-body color</p>
+          </div>
+          <div class="br-type-util-row">
+            <code class="br-util-label">.text-caption-error</code>
+            <p class="text-caption-error">11px / Inter 500 / red-500</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Spacing ────────────────────────────────────────────────────── -->
+    <section id="spacing" class="br-section">
+      <div class="container">
+        <h2 class="br-section-heading">Spacing</h2>
+        <div class="br-spacing-scale">
+          {spacingScale.map(({ token, px }) => (
+            <div class="br-spacing-row">
+              <code class="br-spacing-token">{token}</code>
+              <div class="br-spacing-bar-wrap">
+                <div class="br-spacing-bar" style={`width: ${px}px`}></div>
+              </div>
+              <span class="br-spacing-px">{px}px</span>
+            </div>
+          ))}
+        </div>
+
+        <h3 class="br-subsection-heading">Border radius</h3>
+        <div class="br-radius-row">
+          {[
+            { token: '--border-radius-XS',   px: 2   },
+            { token: '--border-radius-S',    px: 6   },
+            { token: '--border-radius-M',    px: 8   },
+            { token: '--border-radius-L',    px: 16  },
+            { token: '--border-radius-XL',   px: 32  },
+            { token: '--border-radius-full', px: 999 },
+          ].map(({ token, px }) => (
+            <div class="br-radius-item">
+              <div class="br-radius-swatch" style={`border-radius: var(${token})`}></div>
+              <code class="br-spacing-token">{token}</code>
+              <span class="br-spacing-px">{px === 999 ? '999px' : `${px}px`}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Logo ───────────────────────────────────────────────────────── -->
+    <section id="logo" class="br-section">
+      <div class="container">
+        <h2 class="br-section-heading">Logo</h2>
+        <p class="br-note">All approved logo variants. Download SVG files from <code>assets/logos/</code> in the brand repo.</p>
+        <div class="br-logos">
+          {logos.map(({ file, label, dark }) => (
+            <div class:list={['br-logo-item', dark && 'br-logo-item--dark']}>
+              <div class="br-logo-display">
+                <img src={`/logos/${file}`} alt={label} class="br-logo-img" />
+              </div>
+              <div class="br-logo-meta">
+                <span class="br-logo-label">{label}</span>
+                <a class="br-logo-download" href={`/logos/${file}`} download={file}>
+                  <ion-icon name="download-outline"></ion-icon> {file}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h3 class="br-subsection-heading">Logo on dark surface</h3>
+        <p class="br-note">Use the reversed logo (<code>OpenMined-Logo-Dark.svg</code>) on dark backgrounds. The icon-only mark (<code>OpenMined-Logo-Footer.svg</code>) suits small contexts.</p>
+      </div>
+    </section>
+
+    <!-- ── Components ─────────────────────────────────────────────────── -->
+    <section id="components" class="br-section">
+      <div class="container">
+        <h2 class="br-section-heading">Components</h2>
+
+        <!-- Button -->
+        <h3 class="br-subsection-heading">Button</h3>
+        <div class="br-specimen">
+          <div class="br-specimen-row">
+            <Button>Primary</Button>
+            <Button variant="outline">Outline</Button>
+            <Button disabled>Disabled</Button>
+            <Button variant="outline" disabled>Outline disabled</Button>
+          </div>
+        </div>
+        <div class="br-specimen br-specimen--dark">
+          <p class="br-specimen-label">On dark surface</p>
+          <div class="br-specimen-row">
+            <Button>Primary</Button>
+            <Button variant="outline">Outline</Button>
+          </div>
+        </div>
+
+        <!-- Link -->
+        <h3 class="br-subsection-heading">Link</h3>
+        <div class="br-specimen">
+          <div class="br-specimen-row">
+            <Link href="#" variant="inline">Inline link</Link>
+            <Link href="#" variant="nav">Nav link</Link>
+            <Link href="#" variant="subtle">Subtle link</Link>
+          </div>
+        </div>
+
+        <!-- Tag -->
+        <h3 class="br-subsection-heading">Tag</h3>
+        <div class="br-specimen">
+          <div class="br-specimen-row">
+            <Tag>Privacy</Tag>
+            <Tag>Federated Learning</Tag>
+            <Tag>Open Source</Tag>
+          </div>
+        </div>
+
+        <!-- Card -->
+        <h3 class="br-subsection-heading">Card</h3>
+        <div class="br-specimen">
+          <div class="br-card-grid">
+            <Card>
+              <h5>Publishers</h5>
+              <p>Control your distribution in the AI era. Make your assets AI-ready and queryable with guaranteed attribution.</p>
+            </Card>
+            <Card>
+              <h5>Genomics</h5>
+              <p>Run collaborative genomic research without ever centralizing raw data.</p>
+            </Card>
+            <Card>
+              <h5>AI Auditors</h5>
+              <p>Enable third-party AI audits without exposing proprietary models or user data.</p>
+            </Card>
+          </div>
+        </div>
+
+        <!-- Theme toggles -->
+        <h3 class="br-subsection-heading">Theme toggles</h3>
+        <div class="br-specimen">
+          <div class="br-specimen-row br-specimen-row--gap">
+            <div class="br-toggle-item">
+              <ThemeToggle />
+              <code>ThemeToggle — 46×26px</code>
+            </div>
+            <div class="br-toggle-item">
+              <MiniToggle />
+              <code>MiniToggle — 20×11px</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form controls -->
+        <h3 class="br-subsection-heading">Form controls</h3>
+        <div class="br-specimen">
+          <div class="br-form-grid">
+            <div>
+              <label for="ex-input">Text input</label>
+              <Input id="ex-input" placeholder="Placeholder text" />
+            </div>
+            <div>
+              <label for="ex-select">Select</label>
+              <Select id="ex-select">
+                <option>Option one</option>
+                <option>Option two</option>
+                <option>Option three</option>
+              </Select>
+            </div>
+            <div>
+              <label for="ex-textarea">Textarea</label>
+              <Textarea id="ex-textarea" placeholder="Long-form text…" />
+            </div>
+            <div class="br-form-checks">
+              <Checkbox id="ex-check" label="Checkbox label" />
+              <Radio id="ex-radio" name="ex-radio" label="Radio label" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Blockquote -->
+        <h3 class="br-subsection-heading">Blockquote</h3>
+        <div class="br-specimen">
+          <Blockquote>
+            The goal is to make the world's data useful without making it visible.
+          </Blockquote>
+        </div>
+
+        <!-- CodeBlock -->
+        <h3 class="br-subsection-heading">CodeBlock</h3>
+        <div class="br-specimen">
+          <CodeBlock>
+{`import syft as sy
+
+domain = sy.orchestra.launch("my-domain", port=8080)
+client = domain.client
+client.login(email="info@openmined.org", password="changethis")`}
+          </CodeBlock>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="br-footer">
+    <div class="container br-footer__inner">
+      <p class="br-footer-copy">OpenMined Brand Reference — canonical source for tokens and primitives</p>
+    </div>
+  </footer>
+
+</Base>
+
+<style>
+  /* ── Nav ──────────────────────────────────────────────────────────── */
+  .br-nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background-color: var(--surface-background-default);
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color var(--transition-theme);
+  }
+
+  .br-nav__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3XL);
+    min-height: 64px;
+    padding-block: var(--spacing-M);
+  }
+
+  .br-nav__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-M);
+    text-decoration: none;
+    flex: 0 0 auto;
+  }
+
+  .br-nav__title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-subtle);
+    border-left: 1px solid var(--border-color);
+    padding-left: var(--spacing-M);
+  }
+
+  .br-nav__links {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2XL);
+    flex: 1;
+  }
+
+  .br-nav__link {
+    font-size: 14px;
+    color: var(--text-body);
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .br-nav__link:hover { color: var(--color-interactive-hover); }
+
+  /* ── Sections ─────────────────────────────────────────────────────── */
+  .br-section {
+    padding-block: var(--spacing-full);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .br-section--hero {
+    border-top: 0;
+    padding-block: 72px;
+    background-color: var(--surface-background-default);
+  }
+
+  .br-section-heading {
+    margin-bottom: var(--spacing-4XL);
+  }
+
+  .br-subsection-heading {
+    margin-top: var(--spacing-full);
+    margin-bottom: var(--spacing-2XL);
+    font-size: 20px;
+  }
+  .br-subsection-heading:first-of-type { margin-top: 0; }
+
+  /* ── Hero ─────────────────────────────────────────────────────────── */
+  .br-eyebrow {
+    color: var(--text-subtle);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-M);
+  }
+
+  .br-hero-heading {
+    font-size: 52px;
+    margin-bottom: var(--spacing-2XL);
+    max-width: var(--col-6);
+  }
+
+  .br-hero-body {
+    max-width: var(--col-6);
+    color: var(--text-body);
+  }
+
+  /* ── Color ────────────────────────────────────────────────────────── */
+  .br-palette { display: flex; flex-direction: column; gap: var(--spacing-3XL); }
+
+  .br-palette-family {}
+
+  .br-palette-name {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: var(--spacing-S);
+  }
+
+  .br-palette-note { font-weight: 400; color: var(--text-subtle); }
+
+  .br-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-S);
+  }
+
+  .br-swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 52px;
+  }
+
+  .br-swatch-color {
+    width: 52px;
+    height: 40px;
+    border-radius: var(--border-radius-S);
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .br-swatch-step {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-body);
+  }
+
+  .br-swatch-hex {
+    font-size: 9px;
+    color: var(--text-subtle);
+    font-family: Consolas, Monaco, monospace;
+  }
+
+  /* Gradients */
+  .br-gradients {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-M);
+  }
+
+  .br-gradient { display: flex; align-items: center; gap: var(--spacing-L); }
+
+  .br-gradient-bar {
+    width: 200px;
+    height: 32px;
+    border-radius: var(--border-radius-S);
+    flex-shrink: 0;
+  }
+
+  .br-gradient-name { font-size: 14px; color: var(--text-body); }
+
+  /* Semantic tokens */
+  .br-note {
+    font-size: 14px;
+    color: var(--text-subtle);
+    margin-bottom: var(--spacing-2XL);
+  }
+
+  .br-semantic-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-3XL);
+  }
+
+  .br-semantic-group-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--spacing-M);
+  }
+
+  .br-semantic-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-S);
+    margin-bottom: var(--spacing-S);
+  }
+
+  .br-semantic-swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--border-radius-S);
+    flex-shrink: 0;
+  }
+
+  .br-semantic-token { font-size: 11px; color: var(--text-body); }
+
+  /* ── Typography ───────────────────────────────────────────────────── */
+  .br-type-scale { display: flex; flex-direction: column; gap: var(--spacing-M); }
+
+  .br-type-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: baseline;
+    gap: var(--spacing-2XL);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--spacing-M);
+  }
+
+  .br-type-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-subtle);
+    font-family: Consolas, Monaco, monospace;
+    flex-shrink: 0;
+  }
+
+  /* Reset margins on headings inside specimens so they don't shift layout */
+  .br-type-row h1, .br-type-row h2,
+  .br-type-row h3, .br-type-row h4,
+  .br-type-row h5, .br-type-row h6 { margin: 0; }
+
+  .br-type-utilities { display: flex; flex-direction: column; gap: var(--spacing-L); }
+
+  .br-type-util-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: baseline;
+    gap: var(--spacing-2XL);
+  }
+
+  .br-util-label { font-size: 12px; color: var(--text-subtle); }
+
+  /* ── Spacing ──────────────────────────────────────────────────────── */
+  .br-spacing-scale { display: flex; flex-direction: column; gap: var(--spacing-S); }
+
+  .br-spacing-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 60px;
+    align-items: center;
+    gap: var(--spacing-L);
+  }
+
+  .br-spacing-token { font-size: 12px; color: var(--text-body); }
+
+  .br-spacing-bar-wrap { display: flex; align-items: center; }
+
+  .br-spacing-bar {
+    height: 8px;
+    background: var(--color-teal-500);
+    border-radius: 2px;
+    min-width: 2px;
+  }
+
+  .br-spacing-px { font-size: 12px; color: var(--text-subtle); text-align: right; }
+
+  .br-radius-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3XL);
+    align-items: flex-end;
+    margin-top: var(--spacing-2XL);
+  }
+
+  .br-radius-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-S);
+  }
+
+  .br-radius-swatch {
+    width: 64px;
+    height: 64px;
+    background: var(--surface-foreground-default);
+    border: 1px solid var(--border-color);
+  }
+
+  /* ── Logo ─────────────────────────────────────────────────────────── */
+  .br-logos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-2XL);
+  }
+
+  .br-logo-item {
+    border-radius: var(--border-radius-S);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+  }
+
+  .br-logo-item--dark .br-logo-display {
+    background-color: var(--color-grayscale-850);
+  }
+
+  .br-logo-display {
+    background-color: var(--surface-background-default);
+    padding: var(--spacing-3XL);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+  }
+
+  .br-logo-img { max-height: 48px; max-width: 200px; }
+
+  .br-logo-meta {
+    padding: var(--spacing-M) var(--spacing-L);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2XS);
+  }
+
+  .br-logo-label { font-size: 13px; font-weight: 500; color: var(--text-body); }
+
+  .br-logo-download {
+    font-size: 12px;
+    color: var(--text-subtle);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color var(--transition-base);
+  }
+  .br-logo-download:hover { color: var(--color-interactive-hover); }
+
+  /* ── Component specimens ──────────────────────────────────────────── */
+  .br-specimen {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-S);
+    padding: var(--spacing-3XL);
+    margin-bottom: var(--spacing-L);
+  }
+
+  .br-specimen--dark {
+    background-color: var(--color-grayscale-850);
+    border-color: var(--color-grayscale-700);
+  }
+
+  .br-specimen-label {
+    font-size: 12px;
+    color: var(--color-grayscale-400);
+    margin-bottom: var(--spacing-L);
+  }
+
+  .br-specimen-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-L);
+  }
+
+  .br-specimen-row--gap { gap: var(--spacing-3XL); }
+
+  .br-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-2XL);
+  }
+
+  .br-toggle-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-M);
+  }
+
+  .br-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2XL);
+    align-items: start;
+  }
+
+  .br-form-checks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-M);
+    padding-top: 28px; /* align with input top */
+  }
+
+  /* ── Footer ───────────────────────────────────────────────────────── */
+  .br-footer {
+    border-top: 1px solid var(--border-color);
+    padding-block: var(--spacing-2XL);
+  }
+
+  .br-footer__inner { display: flex; align-items: center; }
+
+  .br-footer-copy { font-size: 13px; color: var(--text-subtle); }
+
+  /* ── Responsive ───────────────────────────────────────────────────── */
+  @media (max-width: 991px) {
+    .br-nav__links { display: none; }
+    .br-semantic-grid { grid-template-columns: 1fr 1fr; }
+    .br-logos { grid-template-columns: 1fr 1fr; }
+    .br-card-grid { grid-template-columns: 1fr; }
+    .br-form-grid { grid-template-columns: 1fr; }
+  }
+</style>
