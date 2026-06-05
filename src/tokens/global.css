@@ -26,7 +26,7 @@ body {
 
 /* Explicit re-declaration ensures these re-evaluate --text-body at their own
    position in the tree, picking up any [data-section] context overrides. */
-p, li, td, th, label, span { color: var(--text-body); }
+p, li, td, th, label { color: var(--text-body); }
 
 
 /* ── Heading defaults ────────────────────────────────────────────── */

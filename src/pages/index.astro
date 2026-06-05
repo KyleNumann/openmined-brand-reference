@@ -13,19 +13,28 @@ import CodeBlock from '@brand/CodeBlock.astro';
 import Blockquote from '@brand/Blockquote.astro';
 import DiamondEmbed from '@brand/DiamondEmbed.astro';
 import StreamEmbed from '@brand/StreamEmbed.astro';
+import diamondSrc from '../components/DiamondEmbed.astro?raw';
+import streamSrc  from '../components/StreamEmbed.astro?raw';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const diamondCode = `import DiamondEmbed from '@brand/DiamondEmbed.astro';
+/* ── Embed copy snippets — extract inline scripts from component source ── */
+function extractInlineScript(src: string): string {
+  const m = src.match(/<script is:inline>([\s\S]*?)<\/script>/);
+  return m ? m[1].trim() : '';
+}
 
-<DiamondEmbed
-  labelLeft="Non-Public Data"
-  labelRight="Attributable Insights"
-/>`;
+const diamondCode = `<div id="diamond-embed" style="width:100%;aspect-ratio:1/1;position:relative;overflow:hidden;">
+  <canvas style="position:absolute;inset:0;width:100%;height:100%;display:block;"></canvas>
+</div>
+<script>
+${extractInlineScript(diamondSrc)}
+</script>`;
 
-const streamCode = `import StreamEmbed from '@brand/StreamEmbed.astro';
-
-<StreamEmbed />`;
+const streamCode = `<div id="stream-embed" data-stream-id="stream-embed" style="width:100%;"></div>
+<script>
+${extractInlineScript(streamSrc)}
+</script>`;
 
 /* ── Color families ── */
 const colorFamilies = [
@@ -645,21 +654,27 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
         <!-- GRAPHICS -->
         <section class="sg-section" id="graphics">
           <h2 class="sg-section__title">Graphics</h2>
-          <p class="sg-section__desc">WebGL animated brand components. Copy button copies the component usage snippet.</p>
+          <p class="sg-section__desc">WebGL animated brand components. Click the edit button to open the interactive controls editor. Copy button copies the component usage snippet.</p>
 
           <h4 class="sg-subsection-title">Diamond Embed (SDF WebGL)</h4>
           <div class="sg-graphic-wrap">
+            <a class="sg-graphic-edit" href={`${base}/diamond/`} target="_blank" aria-label="Open Diamond editor">
+              <ion-icon name="open-outline"></ion-icon>
+            </a>
             <button class="sg-graphic-copy" type="button" aria-label="Copy usage code" data-copy={diamondCode}>
               <ion-icon name="copy-outline"      class="copy-icon"></ion-icon>
               <ion-icon name="checkmark-outline" class="check-icon"></ion-icon>
             </button>
             <div class="sg-diamond-demo">
-              <DiamondEmbed id="diamond-sg" labelLeft="Non-Public Data" labelRight="Attributable Insights" />
+              <DiamondEmbed id="diamond-sg" />
             </div>
           </div>
 
           <h4 class="sg-subsection-title">Stream Embed (Gradient WebGL)</h4>
           <div class="sg-graphic-wrap">
+            <a class="sg-graphic-edit" href={`${base}/stream/`} target="_blank" aria-label="Open Stream editor">
+              <ion-icon name="open-outline"></ion-icon>
+            </a>
             <button class="sg-graphic-copy" type="button" aria-label="Copy usage code" data-copy={streamCode}>
               <ion-icon name="copy-outline"      class="copy-icon"></ion-icon>
               <ion-icon name="checkmark-outline" class="check-icon"></ion-icon>
@@ -807,14 +822,13 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   .sg-color-family { margin-bottom: var(--spacing-3XL); }
 
   .sg-swatches {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
     gap: var(--spacing-XS);
     width: 100%;
   }
 
   .sg-swatch {
-    flex: 1;
-    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -891,7 +905,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     flex-shrink: 0;
   }
 
-  .sg-gradient-meta { display: flex; flex-direction: column; gap: var(--spacing-2XS); }
+  .sg-gradient-meta { display: flex; flex-direction: column; gap: var(--spacing-2XS); flex-shrink: 0; }
   .sg-gradient-label { font-size: 13px; color: var(--text-body); }
 
   /* ── Surfaces ─────────────────────────────────────────────────────── */
@@ -1149,10 +1163,10 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
 
   /* box-shadow outline avoids clipping — DiamondEmbed labels extend 335px outside canvas */
 
+  .sg-graphic-edit,
   .sg-graphic-copy {
     position: absolute;
     top: var(--spacing-S);
-    right: var(--spacing-S);
     z-index: var(--z-sticky);
     background: var(--surface-background-default);
     border: 1px solid var(--surface-foreground-default);
@@ -1165,10 +1179,15 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     display: flex;
     align-items: center;
     justify-content: center;
+    text-decoration: none;
     transition: background var(--transition-base), color var(--transition-base),
                 border-color var(--transition-base);
   }
 
+  .sg-graphic-edit  { left: var(--spacing-S); }
+  .sg-graphic-copy  { right: var(--spacing-S); }
+
+  .sg-graphic-edit:hover,
   .sg-graphic-copy:hover {
     border-color: var(--text-body);
     color: var(--text-headline);
@@ -1241,14 +1260,56 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
 
   @media (max-width: 767px) {
+    .sg-main { padding: var(--spacing-L); }
+    .br-nav__wordmark { display: none; }
+
+    /* Swatches — tighter columns and strip hex on small screens */
+    .sg-swatches { grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); }
+    .sg-swatch__color { height: 40px; }
+    .sg-swatch__info { padding: var(--spacing-2XS); }
+    .sg-swatch__label { font-size: 11px; }
+    .sg-swatch__hex { display: none; }
+
+    /* Gradients — stack strip above meta */
+    .sg-gradient-row { flex-direction: column; align-items: flex-start; }
+    .sg-gradient-strip { width: 100%; }
+
+    /* Surfaces */
     .sg-surface-contexts { grid-template-columns: 1fr; }
     .sg-surface-grid--3,
     .sg-surface-grid--5 { grid-template-columns: repeat(2, 1fr); }
+
+    /* Typography */
     .sg-type-row { flex-direction: column; align-items: flex-start; gap: var(--spacing-XS); }
     .sg-type-label { min-width: auto; }
+
+    /* Spacing */
+    .sg-spacing-label { min-width: 120px; font-size: 11px; }
+
+    /* Links */
     .sg-link-row { flex-direction: column; gap: var(--spacing-XS); }
-    .br-nav__wordmark { display: none; }
+    .sg-link-row .sg-type-label { min-width: auto; }
+
+    /* Logos */
     .sg-logo-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 479px) {
+    .sg-main { padding: var(--spacing-M); }
+
+    /* Even smaller swatches — ~5 per row on 375px */
+    .sg-swatches { grid-template-columns: repeat(auto-fit, minmax(36px, 1fr)); }
+
+    /* Surfaces: single column on very small */
+    .sg-surface-grid--3,
+    .sg-surface-grid--5 { grid-template-columns: 1fr 1fr; }
+
+    /* Hide nav links that don't fit, rely on scroll */
+    .br-nav__links { font-size: 12px; }
+
+    /* Shadows/radii: tighter */
+    .sg-shadow-grid { gap: var(--spacing-2XL); }
+    .sg-radius-grid { gap: var(--spacing-L); }
   }
 </style>
 
