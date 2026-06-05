@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!--
+    Theme init must run before stylesheets to prevent a flash of the wrong
+    theme. Reads localStorage, falls back to system preference, defaults light.
+  -->
+  <script>
+    (function () {
+      var stored = localStorage.getItem('theme');
+      var system = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme',
+        stored ?? (system ? 'dark' : 'light'));
+    }());
+  </script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Canonical brand tokens, UI primitives, and logo assets for OpenMined projects.">
+  <title>OpenMined Brand Reference</title>
+
+  <!-- Google Fonts — TODO: replace with self-hosted woff2 before production -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Rubik:wght@400&display=swap" rel="stylesheet">
+
+  <!--
+    Brand token files. Paths are relative to this file's location (site/).
+    For deployment: copy tokens/ alongside this directory, or update these paths.
+  -->
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../tokens/global.css">
+  <link rel="stylesheet" href="../tokens/typography.css">
+
+  <!-- Page and component styles -->
+  <link rel="stylesheet" href="css/site.css">
+
+</head>
+<body>
+
+
+  <!-- ── Top nav ──────────────────────────────────────────────────── -->
+  <header class="br-nav">
+    <div class="container br-nav__inner">
+
+      <a href="/" class="br-nav__logo" aria-label="OpenMined Brand Reference — home">
+        <img src="../assets/logos/OpenMined-Logo.svg"      alt="OpenMined" class="logo-color" height="26">
+        <img src="../assets/logos/OpenMined-Logo-Dark.svg" alt="OpenMined" class="logo-white" height="26">
+        <span class="br-nav__wordmark">Brand Reference</span>
+      </a>
+
+      <nav class="br-nav__links" aria-label="Sections">
+        <a class="br-nav__link" href="#colors">Colors</a>
+        <a class="br-nav__link" href="#gradients">Gradients</a>
+        <a class="br-nav__link" href="#surfaces">Surfaces</a>
+        <a class="br-nav__link" href="#typography">Typography</a>
+        <a class="br-nav__link" href="#spacing">Spacing</a>
+        <a class="br-nav__link" href="#styles">Styles</a>
+        <a class="br-nav__link" href="#elements">Elements</a>
+        <a class="br-nav__link" href="#icons">Icons</a>
+        <a class="br-nav__link" href="#graphics">Graphics</a>
+        <a class="br-nav__link" href="#logos">Logos</a>
+      </nav>
+
+      <!-- MiniToggle — 20×11px, sits in nav corner -->
+      <button type="button" role="switch" aria-label="Toggle dark mode" class="mini-toggle js-switch-theme">
+        <span class="mini-toggle__track">
+          <span class="mini-toggle__knob"></span>
+        </span>
+      </button>
+
+    </div>
+  </header>
+
+
+  <!-- ── Main ─────────────────────────────────────────────────────── -->
+  <main>
+    <div class="container">
+      <div class="sg-main">
+
+        <div class="sg-header">
+          <h1>OpenMined Brand Reference</h1>
+          <p class="text-subtitle">Canonical tokens, UI primitives, and logo assets for all OpenMined projects.</p>
+        </div>
+
+
+        <!-- ── COLORS ──────────────────────────────────────────────── -->
+        <section class="sg-section" id="colors">
+          <h2 class="sg-section__title">Colors</h2>
+          <!--
+            Color swatches and token tables are rendered by site.js from
+            the COLOR_FAMILIES, INTERACTIVE_TOKENS, and TEXT_TOKENS arrays.
+            Edit those arrays to add or remove entries.
+          -->
+          <div id="sg-color-families"></div>
+        </section>
+
+
+        <!-- ── GRADIENTS ───────────────────────────────────────────── -->
+        <section class="sg-section" id="gradients">
+          <h2 class="sg-section__title">Gradients</h2>
+          <p class="sg-section__desc">7 directional gradients at 67° per brand spec.</p>
+          <!-- Rendered by site.js from the GRADIENTS array -->
+          <div id="sg-gradients"></div>
+        </section>
+
+
+        <!-- ── SURFACES ────────────────────────────────────────────── -->
+        <section class="sg-section" id="surfaces">
+          <h2 class="sg-section__title">Surfaces</h2>
+          <!--
+            Semantic and invert surface token demos.
+            Rendered by site.js from SEMANTIC_*_SURFACES and DARK_*_SURFACES arrays.
+          -->
+          <div id="sg-surfaces"></div>
+        </section>
+
+
+        <!-- ── TYPOGRAPHY ──────────────────────────────────────────── -->
+        <section class="sg-section" id="typography">
+          <h2 class="sg-section__title">Typography</h2>
+
+          <h3 class="sg-subsection-title">Page Scale — Headings &amp; Body</h3>
+          <div class="sg-type-specimens">
+
+            <div class="sg-type-row">
+              <span class="sg-type-label">H1 · Rubik 400</span>
+              <h1 class="sg-type-demo">The Quick Brown Fox</h1>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">H2 · Rubik 400</span>
+              <h2 class="sg-type-demo">The Quick Brown Fox</h2>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">H3 · Rubik 400</span>
+              <h3 class="sg-type-demo">The Quick Brown Fox</h3>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">H4 · Rubik 400</span>
+              <h4 class="sg-type-demo">The Quick Brown Fox</h4>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">H5 · Inter 400</span>
+              <h5 class="sg-type-demo">The Quick Brown Fox Jumps</h5>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">H6 · Inter 400</span>
+              <h6 class="sg-type-demo">The Quick Brown Fox Jumps Over</h6>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">.text-subtitle · Inter 400 21px</span>
+              <p class="text-subtitle sg-type-demo">The quick brown fox jumps over the lazy dog.</p>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">.text-eyebrow</span>
+              <p class="text-eyebrow sg-type-demo">Who It's For</p>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">Body · Inter 400 16px</span>
+              <p class="sg-type-demo">The quick brown fox jumps over the lazy dog. Vivamus lacinia odio vitae vestibulum vestibulum lorem ipsum dolor sit amet.</p>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">Body 300 (light)</span>
+              <p style="font-weight: 300;" class="sg-type-demo">The quick brown fox jumps over the lazy dog. Vivamus lacinia odio vitae vestibulum vestibulum lorem ipsum dolor sit amet.</p>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">Body italic</span>
+              <p style="font-style: italic;" class="sg-type-demo">The quick brown fox jumps over the lazy dog.</p>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">.text-caption · Inter 500 11px</span>
+              <span class="text-caption sg-type-demo">Caption — labels, metadata, timestamps, small print</span>
+            </div>
+            <div class="sg-type-row">
+              <span class="sg-type-label">.text-caption-error</span>
+              <span class="text-caption-error sg-type-demo">This field is required.</span>
+            </div>
+
+          </div><!-- /sg-type-specimens -->
+
+          <h3 class="sg-subsection-title" style="margin-top: var(--spacing-4XL);">Article Scale</h3>
+          <p class="sg-section__desc">Long-form reading context. Rendered inside <code>.prose</code>.</p>
+
+          <div class="prose sg-article-demo">
+            <h2>Federated Learning and the Future of Collaborative AI</h2>
+            <p>Privacy-preserving machine learning has emerged as one of the defining challenges of the AI era. As organizations accumulate vast stores of sensitive data — medical records, financial transactions, behavioral signals — the traditional approach of centralizing that data for model training becomes untenable both legally and ethically.</p>
+            <p>Federated learning inverts the paradigm: instead of bringing data to the model, we bring the model to the data. Each participant trains locally, shares only gradient updates, and never exposes raw records. See the <a href="#">original Syft paper</a> for the full protocol.</p>
+
+            <h3>Why Centralization Fails</h3>
+            <p>The costs of centralized training are not merely regulatory. Moving petabytes of sensitive data introduces exfiltration risk at every step — in transit, at rest, and in the hands of whoever operates the central silo.</p>
+
+            <blockquote>
+              <p>"The question is not whether we can build AI systems that learn from private data — the question is whether we can do so without ever moving the data at all."</p>
+            </blockquote>
+
+            <h4>Gradient Compression</h4>
+            <p>Modern federated systems combine gradient sparsification with quantization to reduce communication overhead by several orders of magnitude.</p>
+
+            <h5>Aggregation Protocols</h5>
+            <p>Secure aggregation uses cryptographic masking so the central coordinator sees only the sum of participant gradients — never any individual update.</p>
+
+            <div class="code-block-wrap">
+              <pre class="code-block"><code>import syft as sy
+
+data_owner = sy.connect("https://hospital-a.example.com")
+dataset = data_owner.datasets["patient_records"].request_access(
+    reason="Training federated model for disease prediction"
+)
+model.fit(dataset.features, dataset.labels)</code></pre>
+              <button class="code-block-copy" type="button" aria-label="Copy code" title="Copy code">
+                <ion-icon name="copy-outline"      class="copy-icon"></ion-icon>
+                <ion-icon name="checkmark-outline" class="check-icon"></ion-icon>
+              </button>
+            </div>
+
+            <h6>Implementation Considerations</h6>
+            <p>Practical deployments must account for client dropout, non-IID data distributions, and adversarial participants.</p>
+          </div><!-- /prose -->
+
+        </section><!-- /#typography -->
+
+
+        <!-- ── SPACING ─────────────────────────────────────────────── -->
+        <section class="sg-section" id="spacing">
+          <h2 class="sg-section__title">Spacing</h2>
+          <p class="sg-section__desc">12 defined steps. Values above <code>--spacing-full</code> (88px) are not in the token system.</p>
+          <!-- Rendered by site.js from the SPACING_STEPS array -->
+          <div class="sg-spacing-list" id="sg-spacing-list"></div>
+        </section>
+
+
+        <!-- ── STYLES ──────────────────────────────────────────────── -->
+        <section class="sg-section" id="styles">
+          <h2 class="sg-section__title">Styles</h2>
+
+          <div class="sg-group" id="radii">
+            <h3 class="sg-group-heading">Border Radius</h3>
+            <!-- Rendered by site.js from the RADII array -->
+            <div id="sg-radii"></div>
+          </div>
+
+          <div class="sg-group" id="shadows">
+            <h3 class="sg-group-heading">Shadows</h3>
+            <!-- Rendered by site.js from the SHADOWS array -->
+            <div id="sg-shadows"></div>
+          </div>
+
+          <div class="sg-group" id="transitions">
+            <h3 class="sg-group-heading">Transitions</h3>
+            <p class="sg-section__desc">2 tokens. Both are <code>0.4s ease</code>. Hover each box to preview.</p>
+            <!-- Rendered by site.js from the TRANSITIONS array -->
+            <div id="sg-transitions"></div>
+          </div>
+
+        </section><!-- /#styles -->
+
+
+        <!-- ── ELEMENTS ────────────────────────────────────────────── -->
+        <section class="sg-section" id="elements">
+          <h2 class="sg-section__title">Elements</h2>
+
+          <!-- Buttons -->
+          <div class="sg-group" id="buttons">
+            <h3 class="sg-group-heading">Buttons</h3>
+
+            <h4 class="sg-subsection-title">Variants</h4>
+            <div class="sg-component-row">
+              <a href="#" class="btn">Primary</a>
+              <a href="#" class="btn btn--outline">Outline</a>
+              <button type="button" class="btn" disabled>Disabled Primary</button>
+              <button type="button" class="btn btn--outline" disabled>Disabled Outline</button>
+            </div>
+
+            <h4 class="sg-subsection-title">With Icon</h4>
+            <div class="sg-component-row">
+              <a href="#" class="btn">
+                <span class="btn-icon-row">
+                  Get Started
+                  <ion-icon name="arrow-forward-outline"></ion-icon>
+                </span>
+              </a>
+              <a href="#" class="btn btn--outline">
+                <span class="btn-icon-row">
+                  <ion-icon name="logo-github"></ion-icon>
+                  View on GitHub
+                </span>
+              </a>
+            </div>
+
+            <h4 class="sg-subsection-title">As button element</h4>
+            <div class="sg-component-row">
+              <button type="button" class="btn">Button Type</button>
+              <button type="submit" class="btn">Submit Type</button>
+            </div>
+          </div><!-- /#buttons -->
+
+          <!-- Theme Toggle -->
+          <div class="sg-group" id="theme-toggle">
+            <h3 class="sg-group-heading">Theme Toggle</h3>
+            <p class="sg-section__desc">
+              Two sizes. Both carry <code>.js-switch-theme</code> so the click handler in
+              <code>site.js</code> toggles <code>[data-theme]</code>.
+              <code>.theme-toggle</code> (40×20px) for prominent placement.
+              <code>.mini-toggle</code> (20×11px) for the header corner.
+            </p>
+            <div class="sg-component-row">
+              <!-- ThemeToggle — 40×20px -->
+              <button type="button" role="switch" aria-label="Toggle dark mode" class="theme-toggle js-switch-theme">
+                <span class="theme-toggle__track">
+                  <span class="theme-toggle__knob"></span>
+                </span>
+              </button>
+              <!-- MiniToggle — 20×11px -->
+              <button type="button" role="switch" aria-label="Toggle dark mode" class="mini-toggle js-switch-theme">
+                <span class="mini-toggle__track">
+                  <span class="mini-toggle__knob"></span>
+                </span>
+              </button>
+            </div>
+          </div><!-- /#theme-toggle -->
+
+          <!-- Links -->
+          <div class="sg-group" id="links">
+            <h3 class="sg-group-heading">Links</h3>
+            <p class="sg-section__desc">
+              Four variants defined in <code>global.css</code>:
+              <code>link-inline</code>, <code>link-nav animated-line</code>,
+              <code>link-subtle</code>, <code>absolute-link</code>.
+            </p>
+            <div class="sg-component-col">
+
+              <div class="sg-link-row">
+                <span class="sg-type-label">Bare <code>a</code> inside <code>.prose</code></span>
+                <div class="prose"><p>Visit <a href="#">the OpenMined documentation</a> to get started.</p></div>
+              </div>
+              <div class="sg-link-row">
+                <span class="sg-type-label"><code>.link-inline</code></span>
+                <p><a href="#" class="link-inline">Genomics — Join the Beta</a></p>
+              </div>
+              <div class="sg-link-row">
+                <span class="sg-type-label"><code>.link-inline</code> with icon</span>
+                <p>
+                  <a href="#" class="link-inline sg-link-icon">
+                    Read the case study
+                    <ion-icon name="arrow-forward-outline" class="sg-link-icon__icon"></ion-icon>
+                  </a>
+                </p>
+              </div>
+              <div class="sg-link-row">
+                <span class="sg-type-label"><code>.link-nav.animated-line</code></span>
+                <p>
+                  <a href="#" class="link-nav animated-line">Foundation</a>
+                  &ensp;
+                  <a href="#" class="link-nav animated-line">Blog</a>
+                  &ensp;
+                  <a href="#" class="link-nav animated-line">Careers</a>
+                </p>
+              </div>
+              <div class="sg-link-row">
+                <span class="sg-type-label"><code>.link-subtle</code></span>
+                <p>
+                  <a href="#" class="link-subtle">Privacy Policy</a> ·
+                  <a href="#" class="link-subtle">Terms of Service</a>
+                </p>
+              </div>
+
+            </div><!-- /sg-component-col -->
+          </div><!-- /#links -->
+
+          <!-- Forms -->
+          <div class="sg-group" id="forms">
+            <h3 class="sg-group-heading">Forms</h3>
+            <div class="sg-form-demo">
+
+              <div class="field-wrap">
+                <label for="demo-name">Full Name</label>
+                <input type="text" id="demo-name" name="name" placeholder="Enter your full name">
+              </div>
+
+              <div class="field-wrap">
+                <label for="demo-email">Email Address</label>
+                <input type="email" id="demo-email" name="email" placeholder="you@example.com">
+              </div>
+
+              <div class="field-wrap">
+                <label for="demo-disabled">Disabled Input</label>
+                <input type="text" id="demo-disabled" name="disabled" placeholder="Not editable" disabled>
+              </div>
+
+              <div class="field-wrap">
+                <label for="demo-message">Message</label>
+                <textarea id="demo-message" name="message" rows="4" placeholder="Tell us about your use case..."></textarea>
+              </div>
+
+              <div class="field-wrap">
+                <label for="demo-select">Select an option</label>
+                <select id="demo-select" name="select">
+                  <option value="" disabled selected>Choose one...</option>
+                  <option value="opt1">Option 1</option>
+                  <option value="opt2">Option 2</option>
+                  <option value="opt3">Option 3</option>
+                </select>
+              </div>
+
+              <div class="sg-form-checks">
+                <label class="checkbox-wrap">
+                  <span class="checkbox-control">
+                    <input type="checkbox" id="demo-check1" name="check" class="checkbox-input">
+                    <span class="checkbox-custom"></span>
+                  </span>
+                  <span class="checkbox-label">I agree to the terms of service</span>
+                </label>
+                <label class="checkbox-wrap">
+                  <span class="checkbox-control">
+                    <input type="checkbox" id="demo-check2" name="check2" class="checkbox-input">
+                    <span class="checkbox-custom"></span>
+                  </span>
+                  <span class="checkbox-label">Subscribe to newsletter</span>
+                </label>
+                <label class="checkbox-wrap">
+                  <span class="checkbox-control">
+                    <input type="checkbox" id="demo-check3" name="check3" class="checkbox-input" disabled>
+                    <span class="checkbox-custom"></span>
+                  </span>
+                  <span class="checkbox-label">Disabled checkbox</span>
+                </label>
+              </div>
+
+              <div class="sg-form-checks">
+                <label class="radio-wrap">
+                  <span class="radio-control">
+                    <input type="radio" id="demo-radio1" name="radio" value="a" class="radio-input">
+                    <span class="radio-custom"></span>
+                  </span>
+                  <span class="radio-label">Option A</span>
+                </label>
+                <label class="radio-wrap">
+                  <span class="radio-control">
+                    <input type="radio" id="demo-radio2" name="radio" value="b" class="radio-input">
+                    <span class="radio-custom"></span>
+                  </span>
+                  <span class="radio-label">Option B</span>
+                </label>
+                <label class="radio-wrap">
+                  <span class="radio-control">
+                    <input type="radio" id="demo-radio3" name="radio" value="c" class="radio-input" disabled>
+                    <span class="radio-custom"></span>
+                  </span>
+                  <span class="radio-label">Option C (disabled)</span>
+                </label>
+              </div>
+
+              <div class="sg-form-submit">
+                <button type="submit" class="btn">Submit Form</button>
+              </div>
+
+            </div><!-- /sg-form-demo -->
+          </div><!-- /#forms -->
+
+        </section><!-- /#elements -->
+
+
+        <!-- ── ICONS ───────────────────────────────────────────────── -->
+        <section class="sg-section" id="icons">
+          <h2 class="sg-section__title">Icons</h2>
+          <p class="sg-section__desc">
+            Ionicons web components — current icon peer dependency.
+            Usage: <code>&lt;ion-icon name="arrow-forward-outline"&gt;&lt;/ion-icon&gt;</code>.
+            Custom SVG icons go in <code>assets/icons/</code> and replace ionicons element-by-element.
+          </p>
+          <!-- Rendered by site.js from the ICONS array -->
+          <div class="sg-icon-grid" id="sg-icon-grid"></div>
+        </section>
+
+
+        <!-- ── GRAPHICS ─────────────────────────────────────────────── -->
+        <section class="sg-section" id="graphics">
+          <h2 class="sg-section__title">Graphics</h2>
+          <p class="sg-section__desc">WebGL animated brand components. Copy button copies the component usage snippet.</p>
+
+          <h3 class="sg-subsection-title">Diamond Embed (SDF WebGL)</h3>
+          <div class="sg-graphic-wrap">
+            <button class="sg-graphic-copy" type="button" aria-label="Copy usage code" data-copy-key="diamond">
+              <ion-icon name="copy-outline"      class="copy-icon"></ion-icon>
+              <ion-icon name="checkmark-outline" class="check-icon"></ion-icon>
+            </button>
+            <div class="sg-diamond-demo">
+              <!--
+                DiamondEmbed boots by reading data-label-left / data-label-right
+                from this element. The id is used as the mount target.
+              -->
+              <div id="diamond-sg"
+                   data-label-left="Non-Public Data"
+                   data-label-right="Attributable Insights"></div>
+            </div>
+          </div>
+
+          <h3 class="sg-subsection-title" style="margin-top: var(--spacing-3XL);">Stream Embed (Gradient WebGL)</h3>
+          <div class="sg-graphic-wrap">
+            <button class="sg-graphic-copy" type="button" aria-label="Copy usage code" data-copy-key="stream">
+              <ion-icon name="copy-outline"      class="copy-icon"></ion-icon>
+              <ion-icon name="checkmark-outline" class="check-icon"></ion-icon>
+            </button>
+            <div class="sg-stream-demo">
+              <!--
+                StreamEmbed boots by reading the last [data-stream-id]:not([data-se-init]) element.
+                The id and data-stream-id must match.
+              -->
+              <div id="stream-sg" data-stream-id="stream-sg"></div>
+            </div>
+          </div>
+
+        </section><!-- /#graphics -->
+
+
+        <!-- ── LOGOS ───────────────────────────────────────────────── -->
+        <section class="sg-section" id="logos">
+          <h2 class="sg-section__title">Logos</h2>
+          <p class="sg-section__desc">
+            All approved logo variants. SVG source files in <code>assets/logos/</code>.
+            Logos on dark backgrounds use <code>data-section="always-dark"</code>.
+          </p>
+          <!-- Rendered by site.js from the LOGO_GROUPS array -->
+          <div id="sg-logos"></div>
+        </section>
+
+
+      </div><!-- /sg-main -->
+    </div><!-- /container -->
+  </main>
+
+
+  <!-- ── Scripts ──────────────────────────────────────────────────── -->
+
+  <!-- Brand graphic components (self-boot on load) -->
+  <script src="js/diamond-embed.js"></script>
+  <script src="js/stream-embed.js"></script>
+
+  <!-- Page logic: data rendering, theme toggle, copy buttons, scrollspy -->
+  <script src="js/site.js"></script>
+
+  <!-- Ionicons — CDN for development; self-host before production -->
+  <script type="module" src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.js"></script>
+
+
+</body>
+</html>
