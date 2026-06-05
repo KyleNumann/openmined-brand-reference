@@ -105,8 +105,8 @@ nav {
   --surface-foreground-highest:  var(--color-grayscale-600);
   --text-headline:               var(--color-grayscale-50);
   --text-body:                   var(--color-grayscale-400);
-  --text-headline-light:         var(--color-grayscale-200);
-  --text-body-light:             var(--color-grayscale-400);
+  --text-headline-light:         var(--color-grayscale-850);
+  --text-body-light:             var(--color-grayscale-750);
   --button-dark-color:           var(--color-grayscale-50);
   --button-light-color:          var(--color-grayscale-800);
   color-scheme: dark;
