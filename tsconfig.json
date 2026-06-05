@@ -3,8 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@tokens/*": ["../tokens/*"],
-      "@brand/*":  ["../components/*"]
+      "@tokens/*": ["src/tokens/*"],
+      "@brand/*":  ["src/components/*"]
     }
   }
 }
