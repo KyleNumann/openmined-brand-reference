@@ -190,8 +190,8 @@ const navLinks = [
   <header class="br-nav">
     <div class="container br-nav__inner">
       <a href="/" class="br-nav__logo" aria-label="OpenMined Brand Reference — home">
-        <img src="/logos/OpenMined-Logo.svg"      alt="OpenMined" class="logo-color" height="26" />
-        <img src="/logos/OpenMined-Logo-Dark.svg" alt="OpenMined" class="logo-white" height="26" />
+        <img src={`${import.meta.env.BASE_URL}logos/OpenMined-Logo.svg`}      alt="OpenMined" class="logo-color" height="26" />
+        <img src={`${import.meta.env.BASE_URL}logos/OpenMined-Logo-Dark.svg`} alt="OpenMined" class="logo-white" height="26" />
         <span class="br-nav__wordmark">Brand Reference</span>
       </a>
       <nav class="br-nav__links" aria-label="Sections">
@@ -635,9 +635,9 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
                     class:list={['sg-logo-cell', dark ? 'sg-logo-cell--dark' : 'sg-logo-cell--light']}
                     data-section={dark ? 'always-dark' : 'always-light'}
                   >
-                    <img src={`/logos/${file}`} alt={label} class="sg-logo-img" />
+                    <img src={`${import.meta.env.BASE_URL}logos/${file}`} alt={label} class="sg-logo-img" />
                     <span class="text-caption">{label}</span>
-                    <a class="sg-logo-download" href={`/logos/${file}`} download={file}>
+                    <a class="sg-logo-download" href={`${import.meta.env.BASE_URL}logos/${file}`} download={file}>
                       <ion-icon name="download-outline"></ion-icon> {file}
                     </a>
                   </div>
