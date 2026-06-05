@@ -1,11 +1,11 @@
 # OpenMined Brand Reference
 
-Canonical brand tokens, UI primitives, and logo assets for all OpenMined projects. The `brand-reference/` directory is an Astro site that deploys this repo as a living reference at **brand.openmined.org**.
+Canonical brand tokens, UI primitives, and logo assets for all OpenMined projects. An Astro site at the repo root deploys as a living reference at **brand.openmined.org**.
 
 ## Run the brand reference locally
 
 ```bash
-cd brand-reference && npm install && npm run dev
+npm install && npm run dev
 ```
 
 ## Use in a project
