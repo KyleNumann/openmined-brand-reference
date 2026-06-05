@@ -222,13 +222,20 @@ const navLinks = [
               <h3 class="sg-subsection-title">{family.name}</h3>
               <div class="sg-swatches">
                 {family.steps.map(step => (
-                  <div class="sg-swatch">
+                  <button
+                    class="sg-swatch"
+                    type="button"
+                    data-section="always-light"
+                    data-var={`--color-${family.prefix}-${step}`}
+                    aria-label={`Copy ${family.prefix}-${step} hex`}
+                  >
                     <div
                       class="sg-swatch__color"
                       style={`background-color: var(--color-${family.prefix}-${step});`}
                     ></div>
                     <span class="sg-swatch__label">{step}</span>
-                  </div>
+                    <span class="sg-swatch__hex"></span>
+                  </button>
                 ))}
               </div>
             </div>
@@ -237,10 +244,17 @@ const navLinks = [
           <h3 class="sg-subsection-title" style="margin-top: var(--spacing-3XL);">Interactive States</h3>
           <div class="sg-swatches">
             {interactiveTokens.map(token => (
-              <div class="sg-swatch">
+              <button
+                class="sg-swatch"
+                type="button"
+                data-section="always-light"
+                data-var={token}
+                aria-label={`Copy ${token} hex`}
+              >
                 <div class="sg-swatch__color" style={`background-color: var(${token});`}></div>
                 <span class="sg-swatch__label">{token.replace('--color-interactive-', '')}</span>
-              </div>
+                <span class="sg-swatch__hex"></span>
+              </button>
             ))}
           </div>
 
@@ -366,8 +380,12 @@ const navLinks = [
               <p style="font-style:italic;" class="sg-type-demo">The quick brown fox jumps over the lazy dog.</p>
             </div>
             <div class="sg-type-row">
+              <span class="sg-type-label">.text-label · Inter 500 13px</span>
+              <span class="text-label sg-type-demo">Label — UI labels, swatch steps, icon names, reference metadata</span>
+            </div>
+            <div class="sg-type-row">
               <span class="sg-type-label">.text-caption · Inter 500 11px</span>
-              <span class="text-caption sg-type-demo">Caption — labels, metadata, timestamps, small print</span>
+              <span class="text-caption sg-type-demo">Caption — fine print, timestamps, error hints</span>
             </div>
             <div class="sg-type-row">
               <span class="sg-type-label">.text-caption-error</span>
@@ -588,7 +606,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
             {icons.map(name => (
               <div class="sg-icon-cell">
                 <ion-icon name={name} class="sg-icon"></ion-icon>
-                <span class="text-caption">{name}</span>
+                <span class="text-label">{name}</span>
               </div>
             ))}
           </div>
@@ -638,7 +656,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
                     data-section={dark ? 'always-dark' : 'always-light'}
                   >
                     <img src={`${base}/logos/${file}`} alt={label} class="sg-logo-img" />
-                    <span class="text-caption">{label}</span>
+                    <span class="text-label">{label}</span>
                     <a class="sg-logo-download" href={`${base}/logos/${file}`} download={file}>
                       <ion-icon name="download-outline"></ion-icon> {file}
                     </a>
@@ -765,22 +783,40 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
 
   .sg-swatches {
     display: flex;
-    flex-wrap: wrap;
     gap: var(--spacing-XS);
+    width: 100%;
   }
 
   .sg-swatch {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 4px;
+    align-items: stretch;
+    gap: 0;
+    cursor: pointer;
+    border: none;
+    background: var(--surface-background-default);
+    padding: 0;
+    text-align: center;
+    border-radius: var(--border-radius-S);
+    overflow: hidden;
+    transition: transform var(--transition-base);
+    font-family: inherit;
+  }
+
+  .sg-swatch:hover { transform: translateY(-3px); }
+
+  .sg-swatch:focus-visible {
+    outline: 2px solid var(--color-interactive-focus);
+    outline-offset: 2px;
   }
 
   .sg-swatch__color {
-    width: 48px;
-    height: 48px;
-    border-radius: var(--border-radius-XS);
-    border: 1px solid var(--surface-foreground-default);
+    width: 100%;
+    height: 56px;
+    display: block;
+    flex-shrink: 0;
   }
 
   .sg-swatch__color--sm {
@@ -790,7 +826,24 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     border-radius: 3px;
   }
 
-  .sg-swatch__label { font-size: 10px; color: var(--text-subtle); }
+  .sg-swatch__label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-body);
+    padding: var(--spacing-S) var(--spacing-S) 2px;
+    line-height: 1;
+  }
+
+  .sg-swatch__hex {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-subtle);
+    padding: 2px var(--spacing-S) var(--spacing-S);
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .sg-token-table { display: flex; flex-direction: column; gap: var(--spacing-S); }
   .sg-token-row   { display: flex; align-items: center; gap: var(--spacing-M); }
@@ -830,8 +883,8 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     gap: var(--spacing-XS);
   }
 
-  .sg-surface-cell code { font-size: 10px; word-break: break-all; background: none; padding: 0; }
-  .sg-surface-cell span { font-size: 11px; color: var(--text-body); }
+  .sg-surface-cell code { font-size: 13px; word-break: break-all; background: none; padding: 0; }
+  .sg-surface-cell span { font-size: 13px; color: var(--text-body); }
 
   /* ── Typography ───────────────────────────────────────────────────── */
   .sg-type-specimens { display: flex; flex-direction: column; gap: 0; }
@@ -845,12 +898,11 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
 
   .sg-type-label {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--text-subtle);
     min-width: 200px;
     flex-shrink: 0;
-    font-family: 'Inter', sans-serif;
   }
 
   .sg-type-demo { margin: 0; }
@@ -870,8 +922,8 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     gap: var(--spacing-L);
   }
 
-  .sg-spacing-label { font-size: 12px; min-width: 160px; }
-  .sg-spacing-name  { font-size: 11px; color: var(--text-subtle); }
+  .sg-spacing-label { font-size: 13px; min-width: 160px; }
+  .sg-spacing-name  { font-size: 13px; color: var(--text-subtle); }
 
   /* ── Border Radius ────────────────────────────────────────────────── */
   .sg-radius-grid {
@@ -896,7 +948,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
 
   .sg-radius-cell code,
-  .sg-radius-cell span { font-size: 11px; color: var(--text-subtle); text-align: center; }
+  .sg-radius-cell span { font-size: 13px; color: var(--text-subtle); text-align: center; }
 
   /* ── Shadows ──────────────────────────────────────────────────────── */
   .sg-shadow-grid { display: flex; gap: var(--spacing-3XL); flex-wrap: wrap; }
@@ -914,7 +966,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
 
   .sg-shadow-cell code,
-  .sg-shadow-cell span { font-size: 11px; color: var(--text-body); }
+  .sg-shadow-cell span { font-size: 13px; color: var(--text-body); }
 
   /* ── Transitions ──────────────────────────────────────────────────── */
   .sg-transition-grid { display: flex; gap: var(--spacing-2XL); flex-wrap: wrap; align-items: flex-start; }
@@ -942,8 +994,8 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   .sg-transition-box:hover { background: var(--color-teal-100); }
   :global([data-theme="dark"]) .sg-transition-box:hover { background: var(--color-teal-900); }
 
-  .sg-transition-cell code { font-size: 12px; }
-  .sg-transition-cell span { font-size: 11px; color: var(--text-subtle); line-height: 1.4; }
+  .sg-transition-cell code { font-size: 13px; }
+  .sg-transition-cell span { font-size: 13px; color: var(--text-subtle); line-height: 1.4; }
 
   /* ── Component rows ───────────────────────────────────────────────── */
   .sg-component-row {
@@ -1157,6 +1209,37 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
       setTimeout(() => btn.classList.remove('copied'), 2000);
     });
   });
+
+  // Swatch hex display + click-to-copy
+  (() => {
+    function rgbToHex(rgb: string): string {
+      const m = rgb.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+      if (!m) return '';
+      const h = (n: string) => parseInt(n).toString(16).padStart(2, '0');
+      return `#${h(m[1])}${h(m[2])}${h(m[3])}`;
+    }
+
+    document.querySelectorAll<HTMLElement>('.sg-swatch[data-var]').forEach(swatch => {
+      const colorEl = swatch.querySelector<HTMLElement>('.sg-swatch__color');
+      const hexSpan = swatch.querySelector<HTMLElement>('.sg-swatch__hex');
+      if (!colorEl || !hexSpan) return;
+
+      const hex = rgbToHex(getComputedStyle(colorEl).backgroundColor);
+      hexSpan.textContent = hex;
+
+      swatch.addEventListener('click', () => {
+        if (!hex) return;
+        navigator.clipboard.writeText(hex).then(() => {
+          hexSpan.textContent = 'Copied!';
+          hexSpan.style.color = 'var(--color-green-600)';
+          setTimeout(() => {
+            hexSpan.textContent = hex;
+            hexSpan.style.color = '';
+          }, 1500);
+        });
+      });
+    });
+  })();
 
   // Scrollspy — highlight the active nav section
   (() => {

@@ -89,6 +89,13 @@
   color: var(--color-red-500);
 }
 
+.text-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-body);
+}
+
 
 /* ── Prose heading scale ─────────────────────────────────────────── */
 /* Heading type-scale for long-form `.prose` content (blog posts,
