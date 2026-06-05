@@ -75,25 +75,18 @@
   /* Inherits: Inter 400, 16px, 1.5 lh, --text-body */
 }
 
-.text-caption {
+.text-meta {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text-body);
 }
 
-.text-caption-error {
+.text-meta-error {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--color-red-500);
-}
-
-.text-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-body);
 }
 
 

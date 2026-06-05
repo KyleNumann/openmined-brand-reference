@@ -216,10 +216,11 @@ const navLinks = [
         <!-- COLORS -->
         <section class="sg-section" id="colors">
           <h2 class="sg-section__title">Colors</h2>
+          <p class="sg-section__desc">Brand palette across 10 color families and interactive states. Click any swatch to copy its hex value.</p>
 
           {colorFamilies.map(family => (
             <div class="sg-color-family">
-              <h3 class="sg-subsection-title">{family.name}</h3>
+              <h4 class="sg-subsection-title">{family.name}</h4>
               <div class="sg-swatches">
                 {family.steps.map(step => (
                   <button
@@ -233,15 +234,17 @@ const navLinks = [
                       class="sg-swatch__color"
                       style={`background-color: var(--color-${family.prefix}-${step});`}
                     ></div>
-                    <span class="sg-swatch__label">{step}</span>
-                    <span class="sg-swatch__hex"></span>
+                    <div class="sg-swatch__info">
+                      <span class="sg-swatch__label">{step}</span>
+                      <span class="sg-swatch__hex"></span>
+                    </div>
                   </button>
                 ))}
               </div>
             </div>
           ))}
 
-          <h3 class="sg-subsection-title" style="margin-top: var(--spacing-3XL);">Interactive States</h3>
+          <h4 class="sg-subsection-title">Interactive States</h4>
           <div class="sg-swatches">
             {interactiveTokens.map(token => (
               <button
@@ -252,21 +255,14 @@ const navLinks = [
                 aria-label={`Copy ${token} hex`}
               >
                 <div class="sg-swatch__color" style={`background-color: var(${token});`}></div>
-                <span class="sg-swatch__label">{token.replace('--color-interactive-', '')}</span>
-                <span class="sg-swatch__hex"></span>
+                <div class="sg-swatch__info">
+                  <span class="sg-swatch__label">{token.replace('--color-interactive-', '')}</span>
+                  <span class="sg-swatch__hex"></span>
+                </div>
               </button>
             ))}
           </div>
 
-          <h3 class="sg-subsection-title" style="margin-top: var(--spacing-3XL);">Text Tokens</h3>
-          <div class="sg-token-table">
-            {textTokens.map(token => (
-              <div class="sg-token-row">
-                <div class="sg-swatch__color sg-swatch__color--sm" style={`background-color: var(${token});`}></div>
-                <code>{token}</code>
-              </div>
-            ))}
-          </div>
         </section>
 
         <!-- GRADIENTS -->
@@ -289,11 +285,13 @@ const navLinks = [
         <!-- SURFACES -->
         <section class="sg-section" id="surfaces">
           <h2 class="sg-section__title">Surfaces</h2>
-          <h3 class="sg-subsection-title">Semantic (theme-responsive)</h3>
-          <div class="sg-surface-wrap" style="background: var(--surface-background-default);">
+          <p class="sg-section__desc">Semantic tokens for backgrounds and foregrounds, with theme-responsive and fixed-context variants.</p>
+          <h4 class="sg-subsection-title">Semantic (theme-responsive)</h4>
+          <p class="sg-section__desc">Adapts automatically to light and dark mode. Use <code>--surface-background-*</code> for page backgrounds and <code>--surface-foreground-*</code> for cards, borders, and overlays.</p>
+          <div class="sg-surface-wrap" style="background: var(--surface-background-default); border: 1px solid var(--surface-foreground-default);">
             <div class="sg-surface-grid sg-surface-grid--3">
               {semanticBgSurfaces.map(s => (
-                <div class="sg-surface-cell" style={`background-color: var(${s.token}); border: 1px solid var(--surface-foreground-default);`}>
+                <div class="sg-surface-cell" style={`background-color: var(${s.token});${s.token !== '--surface-background-default' ? ' border: 1px solid var(--surface-foreground-default);' : ''}`}>
                   <code>{s.token}</code>
                   <span>{s.label}</span>
                 </div>
@@ -308,11 +306,12 @@ const navLinks = [
               ))}
             </div>
           </div>
-          <h3 class="sg-subsection-title" style="margin-top: var(--spacing-3XL);">Invert Tokens</h3>
+          <h4 class="sg-subsection-title">Invert Tokens</h4>
+          <p class="sg-section__desc">The <code>--dark-surface-*</code> parallel set. Apply <code>data-section="invert"</code> to flip an element's surface tokens relative to the page theme — dark surface in light mode, light surface in dark mode.</p>
           <div class="sg-surface-wrap" style="background: var(--dark-surface-background-default);">
             <div class="sg-surface-grid sg-surface-grid--3">
               {darkBgSurfaces.map(s => (
-                <div class="sg-surface-cell" style={`background-color: var(${s.token}); border: 1px solid var(--dark-surface-foreground-default);`}>
+                <div class="sg-surface-cell" style={`background-color: var(${s.token});${s.token !== '--dark-surface-background-default' ? ' border: 1px solid var(--dark-surface-foreground-default);' : ''}`}>
                   <code style="color: var(--text-headline-light);">{s.token}</code>
                   <span style="color: var(--text-body-light);">{s.label}</span>
                 </div>
@@ -327,13 +326,45 @@ const navLinks = [
               ))}
             </div>
           </div>
+
+          <h4 class="sg-subsection-title">Fixed Context</h4>
+          <p class="sg-section__desc">Lock any element to a specific surface mode regardless of page theme. Apply <code>data-section</code> directly to a card, section, or container — all semantic tokens inside resolve correctly for that context.</p>
+          <div class="sg-surface-contexts">
+
+            <div class="sg-surface-context" data-section="always-light">
+              <p class="sg-context-label"><code>data-section="always-light"</code></p>
+              <p class="sg-context-desc">Use for cards, modals, or panels that must always appear on a light surface — ensures dark text on light background in both light and dark modes.</p>
+              <h3>Surface heading</h3>
+              <p>Body copy inside an always-light context. Semantic text and surface tokens resolve to their light values regardless of the page theme.</p>
+            </div>
+
+            <div class="sg-surface-context" data-section="always-dark">
+              <p class="sg-context-label"><code>data-section="always-dark"</code></p>
+              <p class="sg-context-desc">Use for hero sections, feature callouts, or decorative panels that should always appear on a dark surface — ensures light text on dark background in both modes.</p>
+              <h3>Surface heading</h3>
+              <p>Body copy inside an always-dark context. Semantic text and surface tokens resolve to their dark values regardless of the page theme.</p>
+            </div>
+
+          </div>
+
         </section>
 
         <!-- TYPOGRAPHY -->
         <section class="sg-section" id="typography">
           <h2 class="sg-section__title">Typography</h2>
+          <p class="sg-section__desc">Type scale, utility classes, and text color tokens for all OpenMined projects.</p>
 
-          <h3 class="sg-subsection-title">Page Scale — Headings &amp; Body</h3>
+          <h4 class="sg-subsection-title">Color Tokens</h4>
+          <div class="sg-token-table">
+            {textTokens.map(token => (
+              <div class="sg-token-row">
+                <div class="sg-swatch__color sg-swatch__color--sm" style={`background-color: var(${token});`}></div>
+                <code>{token}</code>
+              </div>
+            ))}
+          </div>
+
+          <h4 class="sg-subsection-title">Page Scale — Headings &amp; Body</h4>
           <div class="sg-type-specimens">
             <div class="sg-type-row">
               <span class="sg-type-label">H1 · Rubik 400</span>
@@ -380,20 +411,16 @@ const navLinks = [
               <p style="font-style:italic;" class="sg-type-demo">The quick brown fox jumps over the lazy dog.</p>
             </div>
             <div class="sg-type-row">
-              <span class="sg-type-label">.text-label · Inter 500 13px</span>
-              <span class="text-label sg-type-demo">Label — UI labels, swatch steps, icon names, reference metadata</span>
+              <span class="sg-type-label">.text-meta · Inter 500 12px</span>
+              <span class="text-meta sg-type-demo">Meta Text — captions, icon names, form labels, error hints, supporting UI text</span>
             </div>
             <div class="sg-type-row">
-              <span class="sg-type-label">.text-caption · Inter 500 11px</span>
-              <span class="text-caption sg-type-demo">Caption — fine print, timestamps, error hints</span>
-            </div>
-            <div class="sg-type-row">
-              <span class="sg-type-label">.text-caption-error</span>
-              <span class="text-caption-error sg-type-demo">This field is required.</span>
+              <span class="sg-type-label">.text-meta-error</span>
+              <span class="text-meta-error sg-type-demo">This field is required.</span>
             </div>
           </div>
 
-          <h3 class="sg-subsection-title" style="margin-top: var(--spacing-4XL);">Article Scale</h3>
+          <h4 class="sg-subsection-title">Article Scale</h4>
           <p class="sg-section__desc">Long-form reading context. Rendered inside <code>.prose</code>.</p>
           <div class="prose sg-article-demo">
             <h2>Federated Learning and the Future of Collaborative AI</h2>
@@ -424,6 +451,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
             <h6>Implementation Considerations</h6>
             <p>Practical deployments must account for client dropout, non-IID data distributions, and adversarial participants.</p>
           </div>
+
         </section>
 
         <!-- SPACING -->
@@ -444,9 +472,10 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
         <!-- STYLES -->
         <section class="sg-section" id="styles">
           <h2 class="sg-section__title">Styles</h2>
+          <p class="sg-section__desc">Border radius, shadow, and transition tokens.</p>
 
           <div class="sg-group" id="radii">
-            <h3 class="sg-group-heading">Border Radius</h3>
+            <h4 class="sg-group-heading">Border Radius</h4>
             <div class="sg-radius-grid">
               {radii.map(r => (
                 <div class="sg-radius-cell">
@@ -459,7 +488,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
           </div>
 
           <div class="sg-group" id="shadows">
-            <h3 class="sg-group-heading">Shadows</h3>
+            <h4 class="sg-group-heading">Shadows</h4>
             <div class="sg-shadow-grid">
               {shadows.map(s => (
                 <div class="sg-shadow-cell" style={`box-shadow: var(${s.token});`}>
@@ -471,7 +500,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
           </div>
 
           <div class="sg-group" id="transitions">
-            <h3 class="sg-group-heading">Transitions</h3>
+            <h4 class="sg-group-heading">Transitions</h4>
             <p class="sg-section__desc">2 tokens. Both are <code>0.4s ease</code>. Hover each box to preview.</p>
             <div class="sg-transition-grid">
               {transitions.map(t => (
@@ -488,9 +517,10 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
         <!-- ELEMENTS -->
         <section class="sg-section" id="elements">
           <h2 class="sg-section__title">Elements</h2>
+          <p class="sg-section__desc">Brand UI primitives — buttons, links, forms, and controls.</p>
 
           <div class="sg-group" id="buttons">
-            <h3 class="sg-group-heading">Buttons</h3>
+            <h4 class="sg-group-heading">Buttons</h4>
             <h4 class="sg-subsection-title">Variants</h4>
             <div class="sg-component-row">
               <Button href="#">Primary</Button>
@@ -521,7 +551,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
           </div>
 
           <div class="sg-group" id="theme-toggle">
-            <h3 class="sg-group-heading">Theme Toggle</h3>
+            <h4 class="sg-group-heading">Theme Toggle</h4>
             <p class="sg-section__desc">
               Two sizes. Both carry <code>.js-switch-theme</code> so the global handler in
               <code>Base.astro</code> toggles <code>[data-theme]</code>.
@@ -535,7 +565,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
           </div>
 
           <div class="sg-group" id="links">
-            <h3 class="sg-group-heading">Links</h3>
+            <h4 class="sg-group-heading">Links</h4>
             <p class="sg-section__desc">
               Author links via the canonical <code>&lt;Link&gt;</code> component — variants
               <code>inline</code>, <code>nav</code>, <code>subtle</code>, <code>absolute-cover</code>.
@@ -574,7 +604,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
           </div>
 
           <div class="sg-group" id="forms">
-            <h3 class="sg-group-heading">Forms</h3>
+            <h4 class="sg-group-heading">Forms</h4>
             <div class="sg-form-demo">
               <Input id="demo-name"     name="name"     label="Full Name"       placeholder="Enter your full name" />
               <Input id="demo-email"    name="email"    label="Email Address"    placeholder="you@example.com" type="email" />
@@ -606,7 +636,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
             {icons.map(name => (
               <div class="sg-icon-cell">
                 <ion-icon name={name} class="sg-icon"></ion-icon>
-                <span class="text-label">{name}</span>
+                <span class="text-meta">{name}</span>
               </div>
             ))}
           </div>
@@ -617,7 +647,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
           <h2 class="sg-section__title">Graphics</h2>
           <p class="sg-section__desc">WebGL animated brand components. Copy button copies the component usage snippet.</p>
 
-          <h3 class="sg-subsection-title">Diamond Embed (SDF WebGL)</h3>
+          <h4 class="sg-subsection-title">Diamond Embed (SDF WebGL)</h4>
           <div class="sg-graphic-wrap">
             <button class="sg-graphic-copy" type="button" aria-label="Copy usage code" data-copy={diamondCode}>
               <ion-icon name="copy-outline"      class="copy-icon"></ion-icon>
@@ -628,7 +658,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
             </div>
           </div>
 
-          <h3 class="sg-subsection-title" style="margin-top: var(--spacing-3XL);">Stream Embed (Gradient WebGL)</h3>
+          <h4 class="sg-subsection-title">Stream Embed (Gradient WebGL)</h4>
           <div class="sg-graphic-wrap">
             <button class="sg-graphic-copy" type="button" aria-label="Copy usage code" data-copy={streamCode}>
               <ion-icon name="copy-outline"      class="copy-icon"></ion-icon>
@@ -647,7 +677,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
 
           {logoGroups.map(group => (
             <div class="sg-logo-group">
-              <h3 class="sg-subsection-title">{group.group}</h3>
+              <h4 class="sg-subsection-title">{group.group}</h4>
               {group.note && <p class="sg-logo-group-note">{group.note}</p>}
               <div class="sg-logo-grid">
                 {group.logos.map(({ file, label, dark }) => (
@@ -656,7 +686,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
                     data-section={dark ? 'always-dark' : 'always-light'}
                   >
                     <img src={`${base}/logos/${file}`} alt={label} class="sg-logo-img" />
-                    <span class="text-label">{label}</span>
+                    <span class="text-meta">{label}</span>
                     <a class="sg-logo-download" href={`${base}/logos/${file}`} download={file}>
                       <ion-icon name="download-outline"></ion-icon> {file}
                     </a>
@@ -722,7 +752,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     font-weight: 500;
     color: var(--text-body);
     text-decoration: none;
-    padding: 4px var(--spacing-S);
+    padding: var(--spacing-2XS) var(--spacing-S);
     border-radius: var(--border-radius-XS);
     white-space: nowrap;
     transition: background-color var(--transition-base), color var(--transition-base);
@@ -758,8 +788,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
 
   .sg-section__title {
-    margin-bottom: var(--spacing-2XL);
-    font-size: 24px;
+    margin-bottom: var(--spacing-M);
     color: var(--text-headline);
   }
 
@@ -769,14 +798,10 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
 
   .sg-subsection-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-subtle);
     margin-bottom: var(--spacing-L);
-    font-family: 'Inter', sans-serif;
+    margin-top: var(--spacing-3XL);
   }
+  .sg-subsection-title:first-child { margin-top: 0; }
 
   /* ── Colors ───────────────────────────────────────────────────────── */
   .sg-color-family { margin-bottom: var(--spacing-3XL); }
@@ -803,6 +828,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     overflow: hidden;
     transition: transform var(--transition-base);
     font-family: inherit;
+    box-shadow: var(--shadow-md);
   }
 
   .sg-swatch:hover { transform: translateY(-3px); }
@@ -823,14 +849,21 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    border-radius: 3px;
+    border-radius: var(--border-radius-XS);
+  }
+
+  .sg-swatch__info {
+    padding: var(--spacing-S);
+    background: var(--surface-background-bright);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2XS);
   }
 
   .sg-swatch__label {
     font-size: 13px;
     font-weight: 500;
     color: var(--text-body);
-    padding: var(--spacing-S) var(--spacing-S) 2px;
     line-height: 1;
   }
 
@@ -838,7 +871,6 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     font-size: 13px;
     font-weight: 400;
     color: var(--text-subtle);
-    padding: 2px var(--spacing-S) var(--spacing-S);
     line-height: 1;
     white-space: nowrap;
     overflow: hidden;
@@ -859,7 +891,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     flex-shrink: 0;
   }
 
-  .sg-gradient-meta { display: flex; flex-direction: column; gap: 4px; }
+  .sg-gradient-meta { display: flex; flex-direction: column; gap: var(--spacing-2XS); }
   .sg-gradient-label { font-size: 13px; color: var(--text-body); }
 
   /* ── Surfaces ─────────────────────────────────────────────────────── */
@@ -885,6 +917,30 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
 
   .sg-surface-cell code { font-size: 13px; word-break: break-all; background: none; padding: 0; }
   .sg-surface-cell span { font-size: 13px; color: var(--text-body); }
+
+  .sg-surface-contexts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-M);
+  }
+
+  .sg-surface-context {
+    padding: var(--spacing-3XL);
+    border-radius: var(--border-radius-M);
+    background: var(--surface-background-default);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-M);
+  }
+
+  .sg-context-label code { font-size: 13px; background: none; padding: 0; }
+
+  .sg-context-desc {
+    color: var(--text-body);
+    border-bottom: 1px solid var(--surface-foreground-default);
+    padding-bottom: var(--spacing-M);
+    margin-bottom: var(--spacing-S);
+  }
 
   /* ── Typography ───────────────────────────────────────────────────── */
   .sg-type-specimens { display: flex; flex-direction: column; gap: 0; }
@@ -1073,9 +1129,6 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
 
   .sg-group-heading {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 500;
     color: var(--text-headline);
     margin-bottom: var(--spacing-2XL);
   }
@@ -1100,13 +1153,13 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
     position: absolute;
     top: var(--spacing-S);
     right: var(--spacing-S);
-    z-index: 100;
+    z-index: var(--z-sticky);
     background: var(--surface-background-default);
     border: 1px solid var(--surface-foreground-default);
     border-radius: var(--border-radius-XS);
     color: var(--text-body);
     cursor: pointer;
-    padding: 4px 6px;
+    padding: var(--spacing-2XS) var(--spacing-XS);
     font-size: 15px;
     line-height: 1;
     display: flex;
@@ -1179,7 +1232,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
 
   /* ── Responsive ───────────────────────────────────────────────────── */
   @media (max-width: 991px) {
-    .br-nav__links { gap: 2px; }
+    .br-nav__links { gap: var(--spacing-3XS); }
     .sg-main { padding: var(--spacing-2XL); }
     .sg-surface-grid--3 { grid-template-columns: repeat(3, 1fr); }
     .sg-surface-grid--5 { grid-template-columns: repeat(3, 1fr); }
@@ -1188,6 +1241,7 @@ model.fit(dataset.features, dataset.labels)`}</CodeBlock>
   }
 
   @media (max-width: 767px) {
+    .sg-surface-contexts { grid-template-columns: 1fr; }
     .sg-surface-grid--3,
     .sg-surface-grid--5 { grid-template-columns: repeat(2, 1fr); }
     .sg-type-row { flex-direction: column; align-items: flex-start; gap: var(--spacing-XS); }

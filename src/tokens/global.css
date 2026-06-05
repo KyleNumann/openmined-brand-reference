@@ -24,6 +24,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Explicit re-declaration ensures these re-evaluate --text-body at their own
+   position in the tree, picking up any [data-section] context overrides. */
+p, li, td, th, label, span { color: var(--text-body); }
+
 
 /* ── Heading defaults ────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {
@@ -101,8 +105,8 @@ nav {
   --surface-foreground-highest:  var(--color-grayscale-600);
   --text-headline:               var(--color-grayscale-50);
   --text-body:                   var(--color-grayscale-400);
-  --text-headline-light:         var(--color-grayscale-850);
-  --text-body-light:             var(--color-grayscale-750);
+  --text-headline-light:         var(--color-grayscale-200);
+  --text-body-light:             var(--color-grayscale-400);
   --button-dark-color:           var(--color-grayscale-50);
   --button-light-color:          var(--color-grayscale-800);
   color-scheme: dark;
@@ -286,6 +290,7 @@ label {
 /* ── Code blocks ─────────────────────────────────────────────────── */
 code {
   background: var(--surface-foreground-default);
+  color: var(--text-body);
   border-radius: 3px;
   padding: 0.2em 0.3em;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
