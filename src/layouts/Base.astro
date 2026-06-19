@@ -12,6 +12,8 @@ const {
   title = 'OpenMined Brand Reference',
   description = 'Canonical brand tokens, UI primitives, and logo assets for OpenMined projects.',
 } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -31,6 +33,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href={`${base}/logos/OpenMined-Icon.svg`} />
     <title>{title}</title>
 
     <!-- Google Fonts scaffold — TODO: replace with self-hosted woff2 before production -->
