@@ -12,7 +12,7 @@ npm install && npm run dev
 
 Brand assets sync as a local copy into the consuming project's `src/brand/` — not installed as a package. Logo SVGs are served from `public/logos/`. Record the brand repo commit SHA in `src/brand/brand-version.txt` as the sync audit trail.
 
-See `CLAUDE.md` for sync approaches, usage rules, and the color mode system.
+See `AGENTS.md` for sync approaches, usage rules, and the color mode system — it's the model-independent canonical guide for any AI tool or human (`CLAUDE.md` just imports it).
 
 ## Peer dependency
 
